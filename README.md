@@ -1,4 +1,4 @@
-#door sensor location
+# door sensor location
 use door sensor for location
 
 搭建：maven
