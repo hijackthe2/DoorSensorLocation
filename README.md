@@ -14,6 +14,7 @@ use door sensor for location
 策略模式：
 
     自定义注解:
+    
         为实现同一个接口的类定义一个id，使用getBeansWithAnnotation获取使用了该注解的类的实例。
     
         以注解的值作为键，bean实例作为对象，生成map。注解的值默认为类名。
