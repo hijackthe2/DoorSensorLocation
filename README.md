@@ -11,4 +11,17 @@ use door sensor for location
     
     查询：分页
     
-动态手动注册类进入spring容器
+策略模式：
+
+    使用自定义注解，为实现同一个接口的类定义一个id，使用getBeansWithAnnotation获取使用了该注解的类的实例。
+    
+    以注解的值作为键，bean实例作为对象，生成map。注解的值默认为类名。
+    
+    
+    使用@Autowired注解Collection。Autowired当使用在Collection里时，
+    
+    会将所申明类的所有实现类都放在指定的Collection里。
+    
+    如果Autowired和map使用的话呢，它默认将bean名称作为key，bean实例作为value。
+    
+    如果该实现类被@Component注解时，注解中的value值将作为key，默认情况下为类名。
