@@ -2,11 +2,15 @@ package com.example.doorsensor.factory;
 
 import com.example.doorsensor.strategy.ParseStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Service
+/**
+ * 根据匹配id，匹配相应的继承ParseStrategy的类
+ * 返回该类的bean
+ */
+@Component
 public class ParseStrategyBeanFactory {
 
     @Autowired
