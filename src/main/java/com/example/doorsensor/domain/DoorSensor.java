@@ -11,6 +11,12 @@ import java.time.LocalDateTime;
 @Table(name = "door_sensor", schema = "doorsensor")
 public class DoorSensor {
 
+    /**
+     * 匹配门磁解析规则，该属性不加入数据库的字段中
+     */
+    @Transient
+    public static String CLASSNAME = "DoorSensor";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -68,8 +74,8 @@ public class DoorSensor {
      * 设备接入项目的id
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "door_sensor_project_id")
-    private DoorSensorProject project;
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     /**
      * 传感器状态 0正常 1故障 2报警 其他（保留）
@@ -111,6 +117,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "data_index")
+
     private Integer index = -1;
 
     public long getId() {
@@ -177,11 +184,11 @@ public class DoorSensor {
         this.updateTime = updateTime;
     }
 
-    public DoorSensorProject getProject() {
+    public Project getProject() {
         return project;
     }
 
-    public void setProject(DoorSensorProject project) {
+    public void setProject(Project project) {
         this.project = project;
     }
 

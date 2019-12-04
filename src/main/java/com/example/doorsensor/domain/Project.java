@@ -1,7 +1,10 @@
 package com.example.doorsensor.domain;
 
+import org.springframework.util.StringUtils;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "door_sensor_project", schema = "doorsensor")
-public class DoorSensorProject {
+public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +57,28 @@ public class DoorSensorProject {
     private LocalDateTime updateTime = LocalDateTime.now();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "door_sensor_project_id")
+    @JoinColumn(name = "project_id")
+
+    public List<String> getAllGwEui(){
+        List<String> gwEuiList = new ArrayList<>();
+        if(!StringUtils.isEmpty(gwEui1)){
+            gwEuiList.add(gwEui1);
+        }
+        if(!StringUtils.isEmpty(gwEui2)){
+            gwEuiList.add(gwEui2);
+        }
+        if(!StringUtils.isEmpty(gwEui3)){
+            gwEuiList.add(gwEui3);
+        }
+        if(!StringUtils.isEmpty(gwEui4)){
+            gwEuiList.add(gwEui4);
+        }
+        if(!StringUtils.isEmpty(gwEui5)){
+            gwEuiList.add(gwEui5);
+        }
+        return gwEuiList;
+    }
+
     private List<DoorSensor> doorSensors;
 
     public long getId() {
