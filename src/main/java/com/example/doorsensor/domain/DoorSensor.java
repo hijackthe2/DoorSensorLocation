@@ -32,7 +32,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "car_id")
-    private long carId;
+    private long carId = -1;
 
     /**
      * 是否绑定车辆
@@ -54,7 +54,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "create_time")
-    private LocalDateTime createTime;
+    private LocalDateTime createTime = LocalDateTime.now();
 
     /**
      * 设备更新数据的时间
@@ -62,7 +62,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    private LocalDateTime updateTime = LocalDateTime.now();
 
     /**
      * 设备接入项目的id
@@ -76,42 +76,42 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "sensor_status")
-    private Integer sensorStatus;
+    private Integer sensorStatus = 0;
 
     /**
      * 门磁状态 true(3)开门 false(0)关门
      */
     @Basic
     @Column(name = "is_open")
-    private boolean isOpen;
+    private boolean isOpen = false;
 
     /**
      * 电池状态 0正常 1低电 其他（保留）
      */
     @Basic
     @Column(name = "battery_status")
-    private Integer batteryStatus;
+    private Integer batteryStatus = 0;
 
     /**
      * 防拆状态 false(0)正常 true(1)被拆
      */
     @Basic
     @Column(name = "is_removed")
-    private boolean isRemoved;
+    private boolean isRemoved = false;
 
     /**
      * 按键状态 0正常 1测试 2消音
      */
     @Basic
     @Column(name = "key_status")
-    private Integer keyStatus;
+    private Integer keyStatus = 0;
 
     /**
      * 计数 0~255 循环计数
      */
     @Basic
     @Column(name = "data_index")
-    private Integer index;
+    private Integer index = -1;
 
     public long getId() {
         return id;

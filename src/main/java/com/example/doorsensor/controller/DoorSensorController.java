@@ -6,7 +6,7 @@ import com.example.doorsensor.domain.GateWayInfo;
 import com.example.doorsensor.domain.SingleRequest;
 import com.example.doorsensor.service.ReceiveService;
 import com.example.doorsensor.util.DateUtil;
-import com.example.doorsensor.util.ResultUtil;
+import com.example.doorsensor.util.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,7 +56,12 @@ public class DoorSensorController {
             gateWayInfoList.add(gateWayInfo);
         }
         singleRequest.setGateWayInfoList(gateWayInfoList);
-        return receiveService.receiveSingleRequest(singleRequest) ?
-                ResultUtil.success("success") : ResultUtil.fail(-1, "receive single request failed");
+        boolean result = receiveService.receiveSingleRequest(singleRequest);
+        if(!result){
+            log.warn("单条接口请求的数据解析失败");
+            return ResponseUtil.fail(-1, "receive single request failed");
+        }
+        log.info("单条接口请求数据解析成功");
+        return ResponseUtil.success("success");
     }
 }

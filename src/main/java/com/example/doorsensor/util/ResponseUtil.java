@@ -2,7 +2,7 @@ package com.example.doorsensor.util;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class ResultUtil {
+public class ResponseUtil {
 
     public static String success(Object info){
         JSONObject object = new JSONObject();

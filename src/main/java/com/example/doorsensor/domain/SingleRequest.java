@@ -3,7 +3,6 @@ package com.example.doorsensor.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author yyl
@@ -39,7 +38,7 @@ public class SingleRequest {
      */
     @Basic
     @Column(name = "last_update_time")
-    private LocalDateTime lastUpdateTime;
+    private LocalDateTime lastUpdateTime = LocalDateTime.now();
 
     /**
      * 设备传输数据
@@ -65,7 +64,7 @@ public class SingleRequest {
      */
     @Basic
     @Column(name = "data_type")
-    private Integer dataType;
+    private Integer dataType = 223;
 
     /**
      * 0到多条网关信息

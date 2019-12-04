@@ -47,11 +47,11 @@ public class DoorSensorProject {
 
     @Basic
     @Column(name = "create_time")
-    private LocalDateTime createTime;
+    private LocalDateTime createTime = LocalDateTime.now();
 
     @Basic
     @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    private LocalDateTime updateTime = LocalDateTime.now();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "door_sensor_project_id")

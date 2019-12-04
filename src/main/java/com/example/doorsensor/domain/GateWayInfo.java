@@ -42,35 +42,35 @@ public class GateWayInfo {
      */
     @Basic
     @Column(name = "rssi")
-    private Integer rssi;
+    private Integer rssi = 0;
 
     /**
      * 信噪比
      */
     @Basic
     @Column(name = "lsnr")
-    private Integer lsnr;
+    private Integer lsnr = 0;
 
     /**
      * 高度
      */
     @Basic
     @Column(name = "alti")
-    private Integer alti;
+    private Integer alti = 0;
 
     /**
      * 经度
      */
     @Basic
     @Column(name = "lng")
-    private Integer lng;
+    private Integer lng = 0;
 
     /**
      * 维度
      */
     @Basic
     @Column(name = "lati")
-    private Integer lati;
+    private Integer lati = 0;
 
     /**
      * 对应的单条接口请求
