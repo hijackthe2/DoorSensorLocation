@@ -26,11 +26,11 @@ public class DoorSensor {
      *设备的devEui
      */
     @Basic
-    @Column(name = "dev_eui")
+    @Column(name = "dev_eui", length = 32)
     private String devEui;
 
     @Basic
-    @Column(name = "dev_name")
+    @Column(name = "dev_name", length = 32)
     private String devName;
 
     /**
@@ -73,9 +73,9 @@ public class DoorSensor {
     /**
      * 设备接入项目的id
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @Basic
+    @Column(name = "project_id")
+    private long projectId;
 
     /**
      * 传感器状态 0正常 1故障 2报警 其他（保留）
@@ -183,12 +183,12 @@ public class DoorSensor {
         this.updateTime = updateTime;
     }
 
-    public Project getProject() {
-        return project;
+    public long getProjectId() {
+        return projectId;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setProjectId(long projectId) {
+        this.projectId = projectId;
     }
 
     public Integer getSensorStatus() {

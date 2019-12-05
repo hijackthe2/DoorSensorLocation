@@ -1,7 +1,6 @@
 package com.example.doorsensor.domain;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 /**
  * @author yyl
@@ -20,21 +19,21 @@ public class GateWayInfo {
      * 下行帧区号
      */
     @Basic
-    @Column(name = "fcnt_down")
+    @Column(name = "fcnt_down", length = 10)
     private String fcntDown;
 
     /**
      * 上行帧区号
      */
     @Basic
-    @Column(name = "fcnt_up")
+    @Column(name = "fcnt_up", length = 10)
     private String fcntUp;
 
     /**
      * 网关名称
      */
     @Basic
-    @Column(name = "gw_eui")
+    @Column(name = "gw_eui", length = 10)
     private String gwEui;
 
     /**
@@ -75,9 +74,9 @@ public class GateWayInfo {
     /**
      * 对应的单条接口请求
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gate_way_info_id")
-    private SingleRequest singleRequest;
+    @Basic
+    @Column(name = "single_request_id")
+    private long singleRequestId;
 
     public long getId() {
         return id;
@@ -151,11 +150,11 @@ public class GateWayInfo {
         this.lati = lati;
     }
 
-    public SingleRequest getSingleRequest() {
-        return singleRequest;
+    public long getSingleRequestId() {
+        return singleRequestId;
     }
 
-    public void setSingleRequest(SingleRequest singleRequest) {
-        this.singleRequest = singleRequest;
+    public void setSingleRequestId(long singleRequestId) {
+        this.singleRequestId = singleRequestId;
     }
 }

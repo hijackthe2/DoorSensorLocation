@@ -20,32 +20,32 @@ public class Project {
     @Column(name = "id")
     private long id;
 
-    @Basic
-    @Column(name = "name", unique = true)
+    @Id
+    @Column(name = "pk_name", length = 32)
     private String name;
 
     @Basic
-    @Column(name = "gw_eui1")
+    @Column(name = "gw_eui1", length = 32)
     private String gwEui1;
 
     @Basic
-    @Column(name = "gw_eui2")
+    @Column(name = "gw_eui2", length = 32)
     private String gwEui2;
 
     @Basic
-    @Column(name = "gw_eui3")
+    @Column(name = "gw_eui3", length = 32)
     private String gwEui3;
 
     @Basic
-    @Column(name = "gw_eui4")
+    @Column(name = "gw_eui4", length = 32)
     private String gwEui4;
 
     @Basic
-    @Column(name = "gw_eui5")
+    @Column(name = "gw_eui5", length = 32)
     private String gwEui5;
 
     @Basic
-    @Column(name = "creator")
+    @Column(name = "creator", length = 32)
     private String creator;
 
     @Basic
@@ -55,9 +55,6 @@ public class Project {
     @Basic
     @Column(name = "update_time")
     private LocalDateTime updateTime = LocalDateTime.now();
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
 
     public List<String> getAllGwEui(){
         List<String> gwEuiList = new ArrayList<>();
@@ -78,8 +75,6 @@ public class Project {
         }
         return gwEuiList;
     }
-
-    private List<DoorSensor> doorSensors;
 
     public long getId() {
         return id;
@@ -159,13 +154,5 @@ public class Project {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
-    }
-
-    public List<DoorSensor> getDoorSensors() {
-        return doorSensors;
-    }
-
-    public void setDoorSensors(List<DoorSensor> doorSensors) {
-        this.doorSensors = doorSensors;
     }
 }

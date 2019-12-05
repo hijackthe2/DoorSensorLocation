@@ -2,19 +2,19 @@ package com.example.doorsensor.util;
 
 import com.alibaba.fastjson.JSONObject;
 
-public class ResponseUtil {
+public class ResponseUtils {
 
-    public static String success(Object info){
+    public static String success(Object data){
         JSONObject object = new JSONObject();
         object.put("code", 0);
-        object.put("msg", info);
+        object.put("msg", data);
         return object.toJSONString();
     }
 
-    public static String fail(Integer code, Object info){
+    public static String fail(Object data){
         JSONObject object = new JSONObject();
-        object.put("code", code);
-        object.put("msg", info);
+        object.put("code", 1);
+        object.put("msg", data);
         return object.toJSONString();
     }
 }

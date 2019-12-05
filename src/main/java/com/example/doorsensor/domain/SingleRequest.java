@@ -22,14 +22,14 @@ public class SingleRequest {
      * 节点模块的DevEui
      */
     @Basic
-    @Column(name = "dev_eui")
+    @Column(name = "dev_eui", length = 32)
     private String devEui;
 
     /**
      * 应用服务电子识别码
      */
     @Basic
-    @Column(name = "app_eui")
+    @Column(name = "app_eui", length = 32)
     private String appEui;
 
     /**
@@ -45,7 +45,7 @@ public class SingleRequest {
      * 16进制字符串
      */
     @Basic
-    @Column(name = "data")
+    @Column(name = "data", length = 32)
     private String data;
 
     /**
@@ -55,7 +55,7 @@ public class SingleRequest {
      * 实际情况暂时传null值
      */
     @Basic
-    @Column(name = "reserver")
+    @Column(name = "reserver", length = 32)
     private String reserver;
 
     /**
@@ -66,11 +66,7 @@ public class SingleRequest {
     @Column(name = "data_type")
     private Integer dataType = 223;
 
-    /**
-     * 0到多条网关信息
-     */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "gate_way_info_id")
+    @Transient
     private List<GateWayInfo> gateWayInfoList;
 
     public long getId() {
@@ -126,6 +122,10 @@ public class SingleRequest {
     }
 
     public void setDataType(int dataType) {
+        this.dataType = dataType;
+    }
+
+    public void setDataType(Integer dataType) {
         this.dataType = dataType;
     }
 

@@ -5,8 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.doorsensor.domain.GateWayInfo;
 import com.example.doorsensor.domain.SingleRequest;
 import com.example.doorsensor.service.ReceiveService;
-import com.example.doorsensor.util.DateUtil;
-import com.example.doorsensor.util.ResponseUtil;
+import com.example.doorsensor.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,7 +34,7 @@ public class DoorSensorController {
         SingleRequest singleRequest = new SingleRequest();
         singleRequest.setDevEui(params.getString("mac"));
         singleRequest.setAppEui(params.getString("appeui"));
-        singleRequest.setLastUpdateTime(DateUtil.parse(params.getString("last_update_time")));
+        singleRequest.setLastUpdateTime(DateUtils.parse(params.getString("last_update_time")));
         singleRequest.setData(params.getString("data"));
         singleRequest.setReserver(params.getString("reserver"));
         singleRequest.setDataType(params.getInteger("data_type"));
@@ -52,16 +51,9 @@ public class DoorSensorController {
             gateWayInfo.setAlti(object.getInteger("alti"));
             gateWayInfo.setLng(object.getInteger("lng"));
             gateWayInfo.setLati(object.getInteger("lati"));
-            gateWayInfo.setSingleRequest(singleRequest);
             gateWayInfoList.add(gateWayInfo);
         }
         singleRequest.setGateWayInfoList(gateWayInfoList);
-        boolean result = receiveService.receiveSingleRequest(singleRequest);
-        if(!result){
-            log.warn("单条接口请求的数据解析失败");
-            return ResponseUtil.fail(-1, "receive single request failed");
-        }
-        log.info("单条接口请求数据解析成功");
-        return ResponseUtil.success("success");
+        return receiveService.receiveSingleRequest(singleRequest);
     }
 }

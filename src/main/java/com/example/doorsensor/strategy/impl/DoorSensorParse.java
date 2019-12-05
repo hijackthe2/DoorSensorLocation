@@ -10,11 +10,10 @@ import com.example.doorsensor.strategy.ParseStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component(value = "DoorSensor")
 @Slf4j
@@ -26,12 +25,16 @@ public class DoorSensorParse implements ParseStrategy {
     @Autowired
     private ProjectRepository projectRepository;
 
+    /**
+     * 边解析边保存
+     */
+    @Transactional
     @Override
-    public Map<String, Object> parseSingleRequest(SingleRequest singleRequest) {
+    public boolean parseSingleRequest(SingleRequest singleRequest) {
         DoorSensor doorSensor = doorSensorRepository.findOneByDevEui(singleRequest.getDevEui());
         if(doorSensor == null){
-            log.warn("设备 DevEui " + singleRequest.getDevEui() + " 不存在");
-            return null;
+            log.warn("设备 DevEui {} 不存在", singleRequest.getDevEui());
+            return false;
         }
         String data = singleRequest.getData();
 //        String type = data.substring(0, 2); //为"03"，表示类型是门磁
@@ -43,24 +46,21 @@ public class DoorSensorParse implements ParseStrategy {
         doorSensor.setKeyStatus(status & 0x07);
         doorSensor.setUpdateTime(LocalDateTime.now());
         int index = Integer.parseInt(data.substring(6, 8), 16);
-        //TODO 计数处理 报警处理
         boolean alerting = !hasExactGateWays(singleRequest, doorSensor) || !hasLegalIndex(doorSensor, index) || doorSensor.getAlert();
         doorSensor.setAlert(alerting);
         doorSensor.setIndex(index);
         if(alerting){
-            log.warn("设备 DevEui " + doorSensor.getDevEui() + " 报警中");
+            log.warn("设备 DevEui {} 报警中", doorSensor.getDevEui());
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", doorSensor);
-        map.put("class", DoorSensor.class);
-        return map;
+        doorSensorRepository.save(doorSensor);
+        return true;
     }
 
     /**
      * 网关信息是否对应不上
      */
     private boolean hasExactGateWays(SingleRequest singleRequest, DoorSensor doorSensor){
-        Project project = projectRepository.findOneById(doorSensor.getProject().getId());
+        Project project = projectRepository.findOneById(doorSensor.getProjectId());
         if(project == null){
             log.warn("设备 DevEui " + doorSensor.getDevEui() + " 不存在与任何一个项目中");
             return false;

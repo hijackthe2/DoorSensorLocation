@@ -13,5 +13,5 @@ public interface ReceiveService {
      * @param singleRequest 单条接口请求的数据
      * @return 成功返回true，失败返回false
      */
-    boolean receiveSingleRequest(SingleRequest singleRequest);
+    String receiveSingleRequest(SingleRequest singleRequest);
 }

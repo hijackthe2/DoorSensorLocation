@@ -3,7 +3,7 @@ package com.example.doorsensor.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class DateUtil {
+public class DateUtils {
 
     private static String format = "yyyyMMddHHmmss";
 

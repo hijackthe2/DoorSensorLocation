@@ -8,6 +8,10 @@ use door sensor for location
 数据库：spring data jpa
 
     表关系：一对多、多对一
+           
+           不推荐使用类似注解：@OneToMany、@ManyToOne
+            
+           减少数据库对外键约束的使用，外键约束判断应在业务逻辑层中实现
     
     查询：分页
     
@@ -27,5 +31,3 @@ use door sensor for location
         如果Autowired和map使用的话，它默认将bean名称作为key，bean实例作为value。
     
         如果该实现类被@Component注解时，注解中的value值将作为key，默认情况下为类名。
-
-可以使用Map对象实现层与层之间的数据传递
