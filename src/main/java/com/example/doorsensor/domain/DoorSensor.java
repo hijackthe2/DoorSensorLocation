@@ -117,7 +117,6 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "data_index")
-
     private Integer index = -1;
 
     public long getId() {

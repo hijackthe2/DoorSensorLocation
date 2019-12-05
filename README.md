@@ -27,3 +27,5 @@ use door sensor for location
         如果Autowired和map使用的话，它默认将bean名称作为key，bean实例作为value。
     
         如果该实现类被@Component注解时，注解中的value值将作为key，默认情况下为类名。
+
+可以使用Map对象实现层与层之间的数据传递

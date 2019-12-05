@@ -1,12 +1,16 @@
 package com.example.doorsensor.strategy;
 
+import com.example.doorsensor.domain.SingleRequest;
+
+import java.util.Map;
+
 public interface ParseStrategy {
 
     /**
-     * TODO 需要解析的形参和返回的解析结果对象需要分别继承相同的类
-     *      策略模式才有效
-     * @param object 解析对象
+     * 使用类名进行强制类型转换
+     * 使用Map进行层与层之间的数据传输
+     * @param singleRequest 解析对象
      * @return 解析结果
      */
-    Object parse(Object object);
+    Map<String, Object> parseSingleRequest(SingleRequest singleRequest);
 }

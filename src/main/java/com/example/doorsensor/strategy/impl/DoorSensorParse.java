@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component(value = "DoorSensor")
 @Slf4j
@@ -25,8 +27,7 @@ public class DoorSensorParse implements ParseStrategy {
     private ProjectRepository projectRepository;
 
     @Override
-    public Object parse(Object object) {
-        SingleRequest singleRequest = (SingleRequest) object;
+    public Map<String, Object> parseSingleRequest(SingleRequest singleRequest) {
         DoorSensor doorSensor = doorSensorRepository.findOneByDevEui(singleRequest.getDevEui());
         if(doorSensor == null){
             log.warn("设备 DevEui " + singleRequest.getDevEui() + " 不存在");
@@ -49,7 +50,10 @@ public class DoorSensorParse implements ParseStrategy {
         if(alerting){
             log.warn("设备 DevEui " + doorSensor.getDevEui() + " 报警中");
         }
-        return doorSensor;
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", doorSensor);
+        map.put("class", DoorSensor.class);
+        return map;
     }
 
     /**
