@@ -20,4 +20,8 @@ public interface DoorSensorService {
 
     String updateBind(String devEui, boolean bind);
 
+    String listStatus(Integer page, Integer size);
+
+    String listByBind(boolean bind, Integer page, Integer size);
+
 }

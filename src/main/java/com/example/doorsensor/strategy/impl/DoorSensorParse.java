@@ -60,7 +60,7 @@ public class DoorSensorParse implements ParseStrategy {
      * 网关信息是否对应不上
      */
     private boolean hasExactGateWays(SingleRequest singleRequest, DoorSensor doorSensor){
-        Project project = projectRepository.findOneById(doorSensor.getProjectId());
+        Project project = projectRepository.findOneByName(doorSensor.getProjectName());
         if(project == null){
             log.warn("设备 DevEui " + doorSensor.getDevEui() + " 不存在与任何一个项目中");
             return false;

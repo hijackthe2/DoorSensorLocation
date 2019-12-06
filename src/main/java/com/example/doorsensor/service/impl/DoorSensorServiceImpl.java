@@ -102,6 +102,23 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional
     @Override
+    public String updateBind(String devEui, boolean bind) {
+        DoorSensor updateSensor = doorSensorRepository.findOneByDevEui(devEui);
+        if (updateSensor == null) {
+            log.warn("绑定/解绑 -- 设备 DevEui {} 不存在", devEui);
+            return ResponseUtils.fail("not found");
+        }
+        updateSensor.setBind(bind);
+        if (doorSensorRepository.save(updateSensor) == null) {
+            log.warn("绑定/解绑 -- 设备 DevEui {} 绑定/解绑失败", devEui);
+            return ResponseUtils.fail("bind/unbind fail");
+        }
+        log.info("绑定/解绑 -- 设备 DevEui {} 绑定/解绑成功", devEui);
+        return ResponseUtils.success("bind/unbind success");
+    }
+
+    @Transactional
+    @Override
     public String delete(String devEui) {
         DoorSensor deleteSensor = doorSensorRepository.findOneByDevEui(devEui);
         if (deleteSensor == null) {
@@ -138,15 +155,46 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
         Page<DoorSensor> doorSensors = doorSensorRepository.findAllByBindAndAlert(bind, alert, pageable);
         if (doorSensors == null) {
-            log.warn("查询状态 -- 查询设备状态失败");
+            log.warn("查询报警 -- 查询设备报警失败");
             return ResponseUtils.fail("list devices alert fail");
         }
-        log.info("查询状态 -- 查询设备状态成功");
+        log.info("查询报警 -- 查询设备报警成功");
         return ResponseUtils.success(doorSensors);
     }
 
     @Override
-    public String updateBind(String devEui, boolean bind) {
-        return null;
+    public String listByBind(boolean bind, Integer page, Integer size) {
+        page = null == page ? 0 : page;
+        size = null == size ? 10 : size;
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
+        Page<DoorSensor> doorSensors = doorSensorRepository.findAllByBind(false, pageable);
+        if (doorSensors == null) {
+            log.warn("查询绑定 -- 查询设备绑定失败");
+            return ResponseUtils.fail("list device bind fail");
+        }
+        log.info("查询绑定 -- 查询设备绑定成功");
+        return ResponseUtils.success(doorSensors);
     }
+
+    @Override
+    public String listStatus(Integer page, Integer size) {
+        JSONObject alertObject = JSON.parseObject(listByBindAndAlert(true, true, null, null));
+        if (alertObject.getInteger("code") != 0) {
+            log.warn("绑定报警车辆查询 -- 报警车辆查询失败");
+            return ResponseUtils.fail("list devices alert fail");
+        }
+        JSONObject normalObject = JSON.parseObject(listByBindAndAlert(true, false, null, null));
+        if (normalObject.getInteger("code") != 0) {
+            log.warn("绑定报警车辆查询 -- 正常车辆查询失败");
+            return ResponseUtils.fail("list devices normal fail");
+        }
+        JSONObject unBindObject = JSON.parseObject(listByBind(false, null, null));
+        if (unBindObject.getInteger("code") != 0) {
+            log.warn("绑定报警车辆查询 -- 解绑车辆查询失败");
+            return ResponseUtils.fail("list devices unbind fail");
+        }
+        log.warn("绑定报警车辆查询 -- 绑定报警车辆查询成功");
+        return ResponseUtils.fail("list devices bind&alert success");
+    }
+
 }

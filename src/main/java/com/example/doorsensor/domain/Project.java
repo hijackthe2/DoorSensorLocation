@@ -3,6 +3,7 @@ package com.example.doorsensor.domain;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * 项目
  */
 @Entity
-@Table(name = "door_sensor_project", schema = "doorsensor")
+@Table(name = "project", schema = "doorsensor")
 public class Project {
 
     @Id
@@ -20,8 +21,8 @@ public class Project {
     @Column(name = "id")
     private Long id;
 
-    @Id
-    @Column(name = "pk_name", length = 32)
+    @Basic
+    @Column(name = "pk_name", length = 32, unique = true, nullable = false)
     private String name;
 
     @Basic

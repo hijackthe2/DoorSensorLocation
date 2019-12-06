@@ -107,6 +107,12 @@ public class DoorSensorController {
     }
 
     @ResponseBody
+    @RequestMapping("/list_devices_status")
+    public String listDevicesStatus() {
+        return doorSensorService.listStatus(0, 10);
+    }
+
+    @ResponseBody
     @RequestMapping("/list_devices_alert")
     public String listDevicesAlert(@RequestBody JSONObject params) {
         return doorSensorService.listByBindAndAlert(true, params.getBoolean("is_alert"), 0, 10);
