@@ -6,12 +6,18 @@ import java.util.List;
 
 public interface DoorSensorService {
 
-    String add(DoorSensor doorSensor, String projectName);
+    String add(DoorSensor doorSensor);
 
-    String addBatch(List<DoorSensor> doorSensors, String projectName);
+    String addBatch(List<DoorSensor> doorSensors);
 
     String update(DoorSensor doorSensor);
 
-    String delete(DoorSensor doorSensor);
+    String delete(String devEui);
+
+    String listByBindAndAlert(boolean bind, boolean alert, Integer page, Integer size);
+
+    String listAll(Integer page, Integer size);
+
+    String updateBind(String devEui, boolean bind);
 
 }

@@ -1,5 +1,7 @@
 package com.example.doorsensor.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.doorsensor.domain.DoorSensor;
 import com.example.doorsensor.repository.DoorSensorRepository;
 import com.example.doorsensor.repository.ProjectRepository;
@@ -7,6 +9,10 @@ import com.example.doorsensor.service.DoorSensorService;
 import com.example.doorsensor.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,15 +31,26 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional
     @Override
-    public String add(DoorSensor doorSensor, String projectName) {
-        if (isProjectNotExisting(projectName)) {
-            log.warn("添加 -- 设备 DevEui {} 的项目 {} 不存在", doorSensor.getDevEui(), projectName);
+    public String add(DoorSensor doorSensor) {
+        if (projectRepository.findOneByName(doorSensor.getProjectName()) == null) {
+            log.warn("添加 -- 设备 DevEui {} 绑定的项目 {} 不存在",
+                    doorSensor.getDevEui(), doorSensor.getProjectName());
             return ResponseUtils.fail("project not found");
         }
-        if (!isDoorSensorNotExisting(doorSensor)) {
+        if (doorSensorRepository.findOneByDevEui(doorSensor.getDevEui()) != null) {
             log.warn("添加 -- 设备 DevEui {} 已存在", doorSensor.getDevEui());
             return ResponseUtils.fail("already existed");
         }
+        doorSensor.setCreateTime(LocalDateTime.now());
+        boolean bind = doorSensor.getCarId() != null && doorSensor.getCarId() > 0;
+        doorSensor.setBind(bind);
+        doorSensor.setAlert(false);
+        doorSensor.setSensorStatus(0);
+        doorSensor.setOpen(false);
+        doorSensor.setBatteryStatus(0);
+        doorSensor.setRemoved(false);
+        doorSensor.setKeyStatus(0);
+        doorSensor.setIndex(-1);
         doorSensor.setUpdateTime(LocalDateTime.now());
         if (doorSensorRepository.save(doorSensor) == null) {
             log.warn("添加 -- 设备 DevEui {} 添加失败", doorSensor.getDevEui());
@@ -43,24 +60,21 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         return ResponseUtils.success("add success");
     }
 
-    @Transactional
+    @Transactional // 默认只能捕获RuntimeException
     @Override
-    public String addBatch(List<DoorSensor> doorSensors, String projectName) {
-        if (isProjectNotExisting(projectName)) {
-            log.warn("批量添加 -- 项目 {} 不存在", projectName);
-            return ResponseUtils.fail("project not found");
-        }
+    public String addBatch(List<DoorSensor> doorSensors) {
         for (DoorSensor doorSensor : doorSensors) {
-            if(!isDoorSensorNotExisting(doorSensor)) {
-                log.warn("批量添加 -- 设备 DevEui {} 已存在", doorSensor.getDevEui());
-                return ResponseUtils.fail("already existed");
+            String response = add(doorSensor);
+            try {
+                JSONObject object = JSON.parseObject(response);
+                if (object.getInteger("code") != 0) {
+                    throw new RuntimeException("批量添加 -- 设备批量添加失败");
+                }
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+                log.warn("批量添加 -- 设备批量添加失败");
+                return ResponseUtils.fail("add batch fail");
             }
-            doorSensor.setUpdateTime(LocalDateTime.now());
-        }
-        List<DoorSensor> saveSensors = doorSensorRepository.saveAll(doorSensors);
-        if (saveSensors == null || saveSensors.size() == 0) {
-            log.warn("批量添加 -- 设备批量添加失败");
-            return ResponseUtils.fail("add batch fail");
         }
         log.info("批量添加 -- 设备批量添加成功");
         return ResponseUtils.success("add batch success");
@@ -69,12 +83,16 @@ public class DoorSensorServiceImpl implements DoorSensorService {
     @Transactional
     @Override
     public String update(DoorSensor doorSensor) {
-        if (isDoorSensorNotExisting(doorSensor)) {
+        DoorSensor updateSensor = doorSensorRepository.findOneByDevEui(doorSensor.getDevEui());
+        if (updateSensor == null) {
             log.warn("更新 -- 设备 DevEui {} 不存在", doorSensor.getDevEui());
             return ResponseUtils.fail("not found");
         }
-        doorSensor.setUpdateTime(LocalDateTime.now());
-        if (doorSensorRepository.save(doorSensor) == null) {
+        updateSensor.setDevName(doorSensor.getDevName());
+        updateSensor.setCarId(doorSensor.getCarId());
+        updateSensor.setProjectName(doorSensor.getProjectName());
+        updateSensor.setUpdateTime(LocalDateTime.now());
+        if (doorSensorRepository.save(updateSensor) == null) {
             log.warn("更新 -- 设备 DevEui {} 更新失败", doorSensor.getDevEui());
             return ResponseUtils.fail("update fail");
         }
@@ -84,29 +102,51 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional
     @Override
-    public String delete(DoorSensor doorSensor) {
-        if (isDoorSensorNotExisting(doorSensor)) {
-            log.warn("删除 -- 设备 DevEui {} 不存在", doorSensor.getDevEui());
+    public String delete(String devEui) {
+        DoorSensor deleteSensor = doorSensorRepository.findOneByDevEui(devEui);
+        if (deleteSensor == null) {
+            log.warn("删除 -- 设备 DevEui {} 不存在", devEui);
             return ResponseUtils.fail("not found");
         }
-        doorSensorRepository.delete(doorSensor);
-        log.info("删除 -- 设备 DevEui {} 删除成功", doorSensor.getDevEui());
+        doorSensorRepository.deleteOnByDevEui(devEui);
+        log.info("删除 -- 设备 DevEui {} 删除成功", devEui);
         return ResponseUtils.success("delete success");
     }
 
-    public String listByBind(boolean blind) {
+    @Override
+    public String listAll(Integer page, Integer size) {
+        page = null == page ? 0 : page;
+        size = null == size ? 10 : size;
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
+        Page<DoorSensor> doorSensors = doorSensorRepository.findAll(pageable);
+        if(doorSensors == null) {
+            log.warn("查询 -- 查询设备失败");
+            return ResponseUtils.fail("list devices fail");
+        }
+        for (DoorSensor doorSensor : doorSensors) {
+            doorSensor.setId(null);
+            doorSensor.setIndex(null);
+        }
+        log.info("查询 -- 查询设备成功");
+        return ResponseUtils.success(doorSensors);
+    }
+
+    @Override
+    public String listByBindAndAlert(boolean bind, boolean alert, Integer page, Integer size) {
+        page = null == page ? 0 : page;
+        size = null == size ? 10 : size;
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
+        Page<DoorSensor> doorSensors = doorSensorRepository.findAllByBindAndAlert(bind, alert, pageable);
+        if (doorSensors == null) {
+            log.warn("查询状态 -- 查询设备状态失败");
+            return ResponseUtils.fail("list devices alert fail");
+        }
+        log.info("查询状态 -- 查询设备状态成功");
+        return ResponseUtils.success(doorSensors);
+    }
+
+    @Override
+    public String updateBind(String devEui, boolean bind) {
         return null;
-    }
-
-    public String listByBindAndAlert(boolean bind, boolean alert) {
-        return null;
-    }
-
-    private boolean isDoorSensorNotExisting(DoorSensor doorSensor) {
-        return doorSensorRepository.findOneByDevEui(doorSensor.getDevEui()) == null;
-    }
-
-    private boolean isProjectNotExisting(String projectName) {
-        return projectRepository.findOneByName(projectName) == null;
     }
 }

@@ -65,7 +65,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
         List<DoorSensor> doorSensors = doorSensorRepository.findAllByProjectId(project.getId());
         for (DoorSensor doorSensor : doorSensors) {
-            doorSensor.setProjectId(-1);
+            doorSensor.setProjectName(project.getName());
         }
         doorSensorRepository.saveAll(doorSensors);
         projectRepository.delete(project);

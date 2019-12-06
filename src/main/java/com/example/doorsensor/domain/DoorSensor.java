@@ -20,7 +20,7 @@ public class DoorSensor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     /**
      *设备的devEui
@@ -38,7 +38,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "car_id")
-    private long carId = -1;
+    private Long carId = null;
 
     /**
      * 是否绑定车辆
@@ -74,8 +74,8 @@ public class DoorSensor {
      * 设备接入项目的id
      */
     @Basic
-    @Column(name = "project_id")
-    private long projectId;
+    @Column(name = "project_pk_name", length = 32)
+    private String projectName;
 
     /**
      * 传感器状态 0正常 1故障 2报警 其他（保留）
@@ -89,7 +89,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "is_open")
-    private boolean isOpen = false;
+    private Boolean isOpen = false;
 
     /**
      * 电池状态 0正常 1低电 其他（保留）
@@ -103,7 +103,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "is_removed")
-    private boolean isRemoved = false;
+    private Boolean isRemoved = false;
 
     /**
      * 按键状态 0正常 1测试 2消音
@@ -119,11 +119,11 @@ public class DoorSensor {
     @Column(name = "data_index")
     private Integer index = -1;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -143,11 +143,11 @@ public class DoorSensor {
         this.devName = devName;
     }
 
-    public long getCarId() {
+    public Long getCarId() {
         return carId;
     }
 
-    public void setCarId(long carId) {
+    public void setCarId(Long carId) {
         this.carId = carId;
     }
 
@@ -183,12 +183,12 @@ public class DoorSensor {
         this.updateTime = updateTime;
     }
 
-    public long getProjectId() {
-        return projectId;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setProjectId(long projectId) {
-        this.projectId = projectId;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public Integer getSensorStatus() {
@@ -199,11 +199,11 @@ public class DoorSensor {
         this.sensorStatus = sensorStatus;
     }
 
-    public boolean isOpen() {
+    public Boolean isOpen() {
         return isOpen;
     }
 
-    public void setOpen(boolean open) {
+    public void setOpen(Boolean open) {
         isOpen = open;
     }
 
@@ -215,11 +215,11 @@ public class DoorSensor {
         this.batteryStatus = batteryStatus;
     }
 
-    public boolean isRemoved() {
+    public Boolean isRemoved() {
         return isRemoved;
     }
 
-    public void setRemoved(boolean removed) {
+    public void setRemoved(Boolean removed) {
         isRemoved = removed;
     }
 

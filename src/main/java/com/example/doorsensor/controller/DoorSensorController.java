@@ -2,8 +2,10 @@ package com.example.doorsensor.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.doorsensor.domain.DoorSensor;
 import com.example.doorsensor.domain.GateWayInfo;
 import com.example.doorsensor.domain.SingleRequest;
+import com.example.doorsensor.service.DoorSensorService;
 import com.example.doorsensor.service.ReceiveService;
 import com.example.doorsensor.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,9 @@ public class DoorSensorController {
 
     @Autowired
     private ReceiveService receiveService;
+
+    @Autowired
+    private DoorSensorService doorSensorService;
 
     /**
      * 解析从LinkWare平台请求得到的单条接口请求
@@ -56,4 +61,67 @@ public class DoorSensorController {
         singleRequest.setGateWayInfoList(gateWayInfoList);
         return receiveService.receiveSingleRequest(singleRequest);
     }
+
+    @ResponseBody
+    @RequestMapping("/add_device")
+    public String addDevice(@RequestBody JSONObject params) {
+        DoorSensor doorSensor = new DoorSensor();
+        doorSensor.setDevEui(params.getString("deveui"));
+        doorSensor.setDevName(params.getString("devname"));
+        doorSensor.setCarId(params.getLong("carid"));
+        doorSensor.setProjectName(params.getString("projectname"));
+        return doorSensorService.add(doorSensor);
+    }
+
+    @ResponseBody
+    @RequestMapping("/add_devices")
+    public String addDevices(@RequestBody JSONObject params) {
+        List<DoorSensor> doorSensors = new ArrayList<>();
+        JSONArray array = params.getJSONArray("devices");
+        for (int i = 0; i < params.size(); ++i) {
+            JSONObject object = array.getJSONObject(i);
+            DoorSensor doorSensor = new DoorSensor();
+            doorSensor.setDevEui(object.getString("deveui"));
+            doorSensor.setDevName(object.getString("devname"));
+            doorSensor.setCarId(object.getLong("carid"));
+            doorSensor.setProjectName(object.getString("projectname"));
+            doorSensors.add(doorSensor);
+        }
+        return doorSensorService.addBatch(doorSensors);
+    }
+
+    @ResponseBody
+    @RequestMapping("/update_device")
+    public String updateDevice(@RequestBody JSONObject params) {
+        DoorSensor doorSensor = new DoorSensor();
+        doorSensor.setDevName(params.getString("devname"));
+        doorSensor.setCarId(params.getLong("carid"));
+        doorSensor.setProjectName(params.getString("projectname"));
+        return doorSensorService.update(doorSensor);
+    }
+
+    @ResponseBody
+    @RequestMapping("/delete_device")
+    public String deleteDevice(@RequestBody JSONObject params) {
+        return doorSensorService.delete(params.getString("deveui"));
+    }
+
+    @ResponseBody
+    @RequestMapping("/list_devices_alert")
+    public String listDevicesAlert(@RequestBody JSONObject params) {
+        return doorSensorService.listByBindAndAlert(true, params.getBoolean("is_alert"), 0, 10);
+    }
+
+    @ResponseBody
+    @RequestMapping("/list_devices")
+    public String listDevices() {
+        return doorSensorService.listAll(0, 10);
+    }
+
+    @ResponseBody
+    @RequestMapping("/bind")
+    public String bind(@RequestBody JSONObject params) {
+        return doorSensorService.updateBind(params.getString("devname"), params.getBoolean("is_bind"));
+    }
+
 }
