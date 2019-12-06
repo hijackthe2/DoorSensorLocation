@@ -65,7 +65,7 @@ public class DoorSensorParse implements ParseStrategy {
             log.warn("设备 DevEui " + doorSensor.getDevEui() + " 不存在与任何一个项目中");
             return false;
         }
-        List<String> gwEuiList = project.getAllGwEui();
+        List<String> gwEuiList = project.getAllGwEuis();
         List<GateWayInfo> gateWayInfoList = singleRequest.getGateWayInfoList();
         if(gwEuiList.size() != gateWayInfoList.size()){
             log.warn("设备 DevEui " + doorSensor.getDevEui() + " 绑定的项目网关数量与接收到该门磁信息的网关数量不相同");

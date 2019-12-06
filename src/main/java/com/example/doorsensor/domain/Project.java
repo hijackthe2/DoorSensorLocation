@@ -57,7 +57,7 @@ public class Project {
     @Column(name = "update_time")
     private LocalDateTime updateTime = LocalDateTime.now();
 
-    public List<String> getAllGwEui(){
+    public List<String> getAllGwEuis(){
         List<String> gwEuiList = new ArrayList<>();
         if(!StringUtils.isEmpty(gwEui1)){
             gwEuiList.add(gwEui1);
@@ -75,6 +75,30 @@ public class Project {
             gwEuiList.add(gwEui5);
         }
         return gwEuiList;
+    }
+
+    public void setAllGwEuis(List<String> gwEuis) {
+        int index = 0;
+        int len = gwEuis.size();
+        if (index < len) {
+            gwEui1 = gwEuis.get(index);
+            index++;
+        }
+        if (index < len) {
+            gwEui2 = gwEuis.get(index);
+            index++;
+        }
+        if (index < len) {
+            gwEui3 = gwEuis.get(index);
+            index++;
+        }
+        if (index < len) {
+            gwEui4 = gwEuis.get(index);
+            index++;
+        }
+        if (index < len) {
+            gwEui5 = gwEuis.get(index);
+        }
     }
 
     public Long getId() {

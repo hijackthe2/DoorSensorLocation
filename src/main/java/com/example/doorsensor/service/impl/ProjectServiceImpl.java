@@ -27,10 +27,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public String add(Project project) {
-        if (!isProjectNotExisting(project)) {
+        if (projectRepository.findOneByName(project.getName()) != null) {
             log.warn("添加 -- 项目 {} 已存在", project.getName());
             return ResponseUtils.fail("add fail");
         }
+        project.setCreateTime(LocalDateTime.now());
         project.setUpdateTime(LocalDateTime.now());
         if (projectRepository.save(project) == null) {
             log.warn("添加 -- 项目 {} 添加失败", project.getName());

@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.doorsensor.domain.DoorSensor;
 import com.example.doorsensor.domain.GateWayInfo;
+import com.example.doorsensor.domain.Project;
 import com.example.doorsensor.domain.SingleRequest;
 import com.example.doorsensor.service.DoorSensorService;
+import com.example.doorsensor.service.ProjectService;
 import com.example.doorsensor.service.ReceiveService;
 import com.example.doorsensor.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,9 @@ public class DoorSensorController {
 
     @Autowired
     private DoorSensorService doorSensorService;
+
+    @Autowired
+    private ProjectService projectService;
 
     /**
      * 解析从LinkWare平台请求得到的单条接口请求
@@ -60,6 +65,21 @@ public class DoorSensorController {
         }
         singleRequest.setGateWayInfoList(gateWayInfoList);
         return receiveService.receiveSingleRequest(singleRequest);
+    }
+
+    @ResponseBody
+    @RequestMapping("/add_project")
+    public String addProject(@RequestBody JSONObject params) {
+        Project project = new Project();
+        project.setName(params.getString("projectname"));
+        project.setCreator(params.getString("creator"));
+        List<String> gwEuiList = new ArrayList<>();
+        JSONArray array = params.getJSONArray("gweuis");
+        for (int i = 0; i < array.size(); i++) {
+            gwEuiList.add(array.getString(i));
+        }
+        project.setAllGwEuis(gwEuiList);
+        return projectService.add(project);
     }
 
     @ResponseBody
