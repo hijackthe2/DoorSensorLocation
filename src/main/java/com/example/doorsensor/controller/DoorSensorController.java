@@ -42,7 +42,7 @@ public class DoorSensorController {
     @RequestMapping("/linkware")
     public String receiveSingleRequest(@RequestBody JSONObject params){
         SingleRequest singleRequest = new SingleRequest();
-        singleRequest.setDevEui(params.getString("mac"));
+        singleRequest.setDevEui(params.getString("mac").toUpperCase());
         singleRequest.setAppEui(params.getString("appeui"));
         singleRequest.setLastUpdateTime(DateUtils.parse(params.getString("last_update_time")));
         singleRequest.setData(params.getString("data"));
@@ -86,7 +86,7 @@ public class DoorSensorController {
     @RequestMapping("/add_device")
     public String addDevice(@RequestBody JSONObject params) {
         DoorSensor doorSensor = new DoorSensor();
-        doorSensor.setDevEui(params.getString("deveui"));
+        doorSensor.setDevEui(params.getString("deveui").toUpperCase());
         doorSensor.setDevName(params.getString("devname"));
         doorSensor.setCarId(params.getLong("carid"));
         doorSensor.setProjectName(params.getString("projectname"));
@@ -101,7 +101,7 @@ public class DoorSensorController {
         for (int i = 0; i < params.size(); ++i) {
             JSONObject object = array.getJSONObject(i);
             DoorSensor doorSensor = new DoorSensor();
-            doorSensor.setDevEui(object.getString("deveui"));
+            doorSensor.setDevEui(object.getString("deveui").toUpperCase());
             doorSensor.setDevName(object.getString("devname"));
             doorSensor.setCarId(object.getLong("carid"));
             doorSensor.setProjectName(object.getString("projectname"));
@@ -114,6 +114,7 @@ public class DoorSensorController {
     @RequestMapping("/update_device")
     public String updateDevice(@RequestBody JSONObject params) {
         DoorSensor doorSensor = new DoorSensor();
+        doorSensor.setDevEui(params.getString("deveui").toUpperCase());
         doorSensor.setDevName(params.getString("devname"));
         doorSensor.setCarId(params.getLong("carid"));
         doorSensor.setProjectName(params.getString("projectname"));
@@ -123,7 +124,7 @@ public class DoorSensorController {
     @ResponseBody
     @RequestMapping("/delete_device")
     public String deleteDevice(@RequestBody JSONObject params) {
-        return doorSensorService.delete(params.getString("deveui"));
+        return doorSensorService.delete(params.getString("deveui").toUpperCase());
     }
 
     @ResponseBody
@@ -147,7 +148,7 @@ public class DoorSensorController {
     @ResponseBody
     @RequestMapping("/bind")
     public String bind(@RequestBody JSONObject params) {
-        return doorSensorService.updateBind(params.getString("devname"), params.getBoolean("is_bind"));
+        return doorSensorService.updateBind(params.getString("deveui").toUpperCase(), params.getBoolean("is_bind"));
     }
 
 }
