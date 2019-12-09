@@ -60,11 +60,11 @@ public class DoorSensorController {
             gateWayInfo.setFcntDown(object.getString("fcntdown"));
             gateWayInfo.setFcntUp(object.getString("fcntup"));
             gateWayInfo.setGwEui(object.getString("gweui"));
-            gateWayInfo.setRssi(object.getInteger("rssi"));
-            gateWayInfo.setLsnr(object.getInteger("lsnr"));
-            gateWayInfo.setAlti(object.getInteger("alti"));
-            gateWayInfo.setLng(object.getInteger("lng"));
-            gateWayInfo.setLati(object.getInteger("lati"));
+            gateWayInfo.setRssi(object.getFloatValue("rssi"));
+            gateWayInfo.setLsnr(object.getFloatValue("lsnr"));
+            gateWayInfo.setAlti(object.getFloatValue("alti"));
+            gateWayInfo.setLng(object.getFloatValue("lng"));
+            gateWayInfo.setLati(object.getFloatValue("lati"));
             gateWayInfoList.add(gateWayInfo);
         }
         singleRequest.setGateWayInfoList(gateWayInfoList);
@@ -97,6 +97,9 @@ public class DoorSensorController {
         return doorSensorService.add(doorSensor);
     }
 
+    /**
+     * 批量添加
+     */
     @ResponseBody
     @RequestMapping("/add_devices")
     public String addDevices(@RequestBody JSONObject params) {
@@ -131,24 +134,36 @@ public class DoorSensorController {
         return doorSensorService.delete(params.getString("deveui").toUpperCase());
     }
 
+    /**
+     * 查询设备列表，并分状态返回结果（alert，normal，unbind）
+     */
     @ResponseBody
     @RequestMapping("/list_devices_status")
     public String listDevicesStatus() {
         return doorSensorService.listStatus(0, 10);
     }
 
+    /**
+     * 按照是否报警查询
+     */
     @ResponseBody
     @RequestMapping("/list_devices_alert")
     public String listDevicesAlert(@RequestBody JSONObject params) {
         return doorSensorService.listByBindAndAlert(true, params.getBoolean("is_alert"), 0, 10);
     }
 
+    /**
+     * 返回所有设备，不分状态
+     */
     @ResponseBody
     @RequestMapping("/list_devices")
     public String listDevices() {
         return doorSensorService.listAll(0, 10);
     }
 
+    /**
+     * 按照是否绑定查询
+     */
     @ResponseBody
     @RequestMapping("/bind")
     public String bind(@RequestBody JSONObject params) {

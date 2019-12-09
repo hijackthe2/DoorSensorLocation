@@ -19,21 +19,21 @@ public class GateWayInfo {
      * 下行帧区号
      */
     @Basic
-    @Column(name = "fcnt_down", length = 10)
+    @Column(name = "fcnt_down", length = 32)
     private String fcntDown;
 
     /**
      * 上行帧区号
      */
     @Basic
-    @Column(name = "fcnt_up", length = 10)
+    @Column(name = "fcnt_up", length = 32)
     private String fcntUp;
 
     /**
      * 网关名称
      */
     @Basic
-    @Column(name = "gw_eui", length = 10)
+    @Column(name = "gw_eui", length = 32)
     private String gwEui;
 
     /**
@@ -41,35 +41,35 @@ public class GateWayInfo {
      */
     @Basic
     @Column(name = "rssi")
-    private Integer rssi = 0;
+    private float rssi = 0;
 
     /**
      * 信噪比
      */
     @Basic
     @Column(name = "lsnr")
-    private Integer lsnr = 0;
+    private float lsnr = 0;
 
     /**
      * 高度
      */
     @Basic
     @Column(name = "alti")
-    private Integer alti = 0;
+    private float alti = 0;
 
     /**
      * 经度
      */
     @Basic
     @Column(name = "lng")
-    private Integer lng = 0;
+    private float lng = 0;
 
     /**
      * 维度
      */
     @Basic
     @Column(name = "lati")
-    private Integer lati = 0;
+    private float lati = 0;
 
     /**
      * 对应的单条接口请求
@@ -110,40 +110,44 @@ public class GateWayInfo {
         this.gwEui = gwEui;
     }
 
-    public Integer getRssi() {
+    public float getRssi() {
         return rssi;
     }
 
-    public void setRssi(Integer rssi) {
+    public void setRssi(float rssi) {
         this.rssi = rssi;
     }
 
-    public Integer getLsnr() {
+    public float getLsnr() {
         return lsnr;
     }
 
-    public void setLsnr(Integer lsnr) {
+    public void setLsnr(float lsnr) {
         this.lsnr = lsnr;
     }
 
-    public Integer getAlti() {
+    public float getAlti() {
         return alti;
     }
 
-    public void setAlti(Integer alti) {
+    public void setAlti(float alti) {
         this.alti = alti;
     }
 
-    public Integer getLng() {
+    public float getLng() {
         return lng;
     }
 
-    public void setLng(Integer lng) {
+    public void setLng(float lng) {
         this.lng = lng;
     }
 
-    public Integer getLati() {
+    public float getLati() {
         return lati;
+    }
+
+    public void setLati(float lati) {
+        this.lati = lati;
     }
 
     public void setLati(Integer lati) {
