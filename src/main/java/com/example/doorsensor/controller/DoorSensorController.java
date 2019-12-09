@@ -125,6 +125,7 @@ public class DoorSensorController {
         doorSensor.setDevName(params.getString("devname"));
         doorSensor.setCarId(params.getLong("carid"));
         doorSensor.setProjectName(params.getString("projectname"));
+        doorSensor.setBind(params.getBooleanValue("bind"));
         return doorSensorService.update(doorSensor);
     }
 
@@ -139,7 +140,7 @@ public class DoorSensorController {
      */
     @ResponseBody
     @RequestMapping("/list_devices_status")
-    public String listDevicesStatus() {
+    public String listDevicesByStatus() {
         return doorSensorService.listStatus(0, 10);
     }
 
@@ -148,7 +149,7 @@ public class DoorSensorController {
      */
     @ResponseBody
     @RequestMapping("/list_devices_alert")
-    public String listDevicesAlert(@RequestBody JSONObject params) {
+    public String listDevicesByAlert(@RequestBody JSONObject params) {
         return doorSensorService.listByBindAndAlert(true, params.getBoolean("is_alert"), 0, 10);
     }
 
@@ -165,9 +166,9 @@ public class DoorSensorController {
      * 按照是否绑定查询
      */
     @ResponseBody
-    @RequestMapping("/bind")
-    public String bind(@RequestBody JSONObject params) {
-        return doorSensorService.updateBind(params.getString("deveui").toUpperCase(), params.getBoolean("is_bind"));
+    @RequestMapping("/list_devices_bind")
+    public String listDevicesBybind(@RequestBody JSONObject params) {
+        return doorSensorService.listByBind(params.getBoolean("is_bind"), 0, 10);
     }
 
     @ResponseBody

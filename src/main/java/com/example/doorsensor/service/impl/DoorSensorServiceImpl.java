@@ -91,6 +91,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         updateSensor.setDevName(doorSensor.getDevName());
         updateSensor.setCarId(doorSensor.getCarId());
         updateSensor.setProjectName(doorSensor.getProjectName());
+        updateSensor.setBind(doorSensor.getBind());
         updateSensor.setUpdateTime(LocalDateTime.now());
         if (doorSensorRepository.save(updateSensor) == null) {
             log.warn("更新 -- 设备 DevEui {} 更新失败", doorSensor.getDevEui());
@@ -98,23 +99,6 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         }
         log.info("更新 -- 设备 DevEui {} 更新成功", doorSensor.getDevEui());
         return ResponseUtils.success("update success");
-    }
-
-    @Transactional
-    @Override
-    public String updateBind(String devEui, boolean bind) {
-        DoorSensor updateSensor = doorSensorRepository.findOneByDevEui(devEui);
-        if (updateSensor == null) {
-            log.warn("绑定/解绑 -- 设备 DevEui {} 不存在", devEui);
-            return ResponseUtils.fail("not found");
-        }
-        updateSensor.setBind(bind);
-        if (doorSensorRepository.save(updateSensor) == null) {
-            log.warn("绑定/解绑 -- 设备 DevEui {} 绑定/解绑失败", devEui);
-            return ResponseUtils.fail("bind/unbind fail");
-        }
-        log.info("绑定/解绑 -- 设备 DevEui {} 绑定/解绑成功", devEui);
-        return ResponseUtils.success("bind/unbind success");
     }
 
     @Transactional
