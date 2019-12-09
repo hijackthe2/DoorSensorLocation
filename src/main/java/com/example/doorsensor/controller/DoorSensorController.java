@@ -9,6 +9,7 @@ import com.example.doorsensor.domain.SingleRequest;
 import com.example.doorsensor.service.DoorSensorService;
 import com.example.doorsensor.service.ProjectService;
 import com.example.doorsensor.service.ReceiveService;
+import com.example.doorsensor.service.WxSignatureService;
 import com.example.doorsensor.util.DateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class DoorSensorController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private WxSignatureService wxSignatureService;
 
     /**
      * 解析从LinkWare平台请求得到的单条接口请求
@@ -149,6 +153,13 @@ public class DoorSensorController {
     @RequestMapping("/bind")
     public String bind(@RequestBody JSONObject params) {
         return doorSensorService.updateBind(params.getString("deveui").toUpperCase(), params.getBoolean("is_bind"));
+    }
+
+    @ResponseBody
+    @RequestMapping("/wx_config")
+    public String wxConfig(@RequestBody JSONObject params) {
+        return wxSignatureService
+                .getSignature(params.getString("url"), params.getString("appid"), params.getString("secret"));
     }
 
 }
