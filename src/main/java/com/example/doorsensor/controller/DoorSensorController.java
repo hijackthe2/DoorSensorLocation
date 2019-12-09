@@ -125,7 +125,7 @@ public class DoorSensorController {
         doorSensor.setDevName(params.getString("devname"));
         doorSensor.setCarId(params.getLong("carid"));
         doorSensor.setProjectName(params.getString("projectname"));
-        doorSensor.setBind(params.getBooleanValue("bind"));
+        doorSensor.setBind(params.getBooleanValue("is_bind"));
         return doorSensorService.update(doorSensor);
     }
 
