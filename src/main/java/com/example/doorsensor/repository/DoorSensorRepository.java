@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +28,7 @@ public interface DoorSensorRepository extends JpaRepository<DoorSensor, Long>,
     Page<DoorSensor> findAllByBind(boolean bind, Pageable pageable);
 
     @Query(value = "delete from door_sensor ds where ds.dev_eui = ?1", nativeQuery = true)
+    @Modifying //更新数据库时（删除、更新），需要加上此注解
     void deleteOneByDevEui(String devEui);
 
     @Query(value = "select * from door_sensor", nativeQuery = true)
