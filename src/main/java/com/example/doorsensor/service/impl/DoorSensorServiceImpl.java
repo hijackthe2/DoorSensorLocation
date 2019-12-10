@@ -172,8 +172,9 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         }
         log.info("查询 -- 查询设备成功");
         JSONObject object = new JSONObject();
-        object.put("total", doorSensors.getSize());
-        object.put("rows", doorSensors.getContent());
+        object.put("totalElements", doorSensors.getTotalElements());
+        object.put("totalPages", doorSensors.getTotalPages());
+        object.put("content", doorSensors.getContent());
         return ResponseUtils.success(object);
     }
 
@@ -189,8 +190,9 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         }
         log.info("查询报警 -- 查询设备报警成功");
         JSONObject object = new JSONObject();
-        object.put("total", doorSensors.getSize());
-        object.put("rows", doorSensors.getContent());
+        object.put("totalElements", doorSensors.getTotalElements());
+        object.put("totalPages", doorSensors.getTotalPages());
+        object.put("content", doorSensors.getContent());
         return ResponseUtils.success(object);
     }
 
@@ -206,8 +208,9 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         }
         log.info("查询绑定 -- 查询设备绑定成功");
         JSONObject object = new JSONObject();
-        object.put("total", doorSensors.getSize());
-        object.put("rows", doorSensors.getContent());
+        object.put("totalElements", doorSensors.getTotalElements());
+        object.put("totalPages", doorSensors.getTotalPages());
+        object.put("content", doorSensors.getContent());
         return ResponseUtils.success(object);
     }
 
