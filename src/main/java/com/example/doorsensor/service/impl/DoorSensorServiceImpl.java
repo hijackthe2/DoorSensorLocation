@@ -231,8 +231,12 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             log.warn("绑定报警车辆查询 -- 解绑车辆查询失败");
             return ResponseUtils.fail("list devices unbind fail");
         }
-        log.warn("绑定报警车辆查询 -- 绑定报警车辆查询成功");
-        return ResponseUtils.fail("list devices bind&alert success");
+        log.info("绑定报警车辆查询 -- 绑定报警车辆查询成功");
+        JSONObject object = new JSONObject();
+        object.put("alert", alertObject.get("msg"));
+        object.put("normal", normalObject.get("msg"));
+        object.put("unbind", unBindObject.get("msg"));
+        return ResponseUtils.success(object);
     }
 
 }
