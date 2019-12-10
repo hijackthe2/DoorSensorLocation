@@ -146,7 +146,7 @@ public class DoorSensorController {
     @ResponseBody
     @RequestMapping("/unbind_device")
     public String unbindDevice(@RequestBody JSONObject params) {
-        return doorSensorService.unbind(params.getString("deveui"));
+        return doorSensorService.unbind(params.getString("deveui").toUpperCase());
     }
 
     /**
