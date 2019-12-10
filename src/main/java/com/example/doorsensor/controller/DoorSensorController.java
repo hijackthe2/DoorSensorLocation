@@ -117,6 +117,9 @@ public class DoorSensorController {
         return doorSensorService.addBatch(doorSensors);
     }
 
+    /**
+     * 更新设备，只能更行设备的信息，限于名称、车号、项目名称
+     */
     @ResponseBody
     @RequestMapping("/update_device")
     public String updateDevice(@RequestBody JSONObject params) {
@@ -125,7 +128,6 @@ public class DoorSensorController {
         doorSensor.setDevName(params.getString("devname"));
         doorSensor.setCarId(params.getLong("carid"));
         doorSensor.setProjectName(params.getString("projectname"));
-        doorSensor.setBind(params.getBooleanValue("is_bind"));
         return doorSensorService.update(doorSensor);
     }
 
@@ -133,6 +135,18 @@ public class DoorSensorController {
     @RequestMapping("/delete_device")
     public String deleteDevice(@RequestBody JSONObject params) {
         return doorSensorService.delete(params.getString("deveui").toUpperCase());
+    }
+
+    @ResponseBody
+    @RequestMapping("/bind_device")
+    public String bindDevice(@RequestBody JSONObject params) {
+        return doorSensorService.bind(params.getString("deveui").toUpperCase(), params.getLong("carid"));
+    }
+
+    @ResponseBody
+    @RequestMapping("/unbind_device")
+    public String unbindDevice(@RequestBody JSONObject params) {
+        return doorSensorService.unbind(params.getString("deveui"));
     }
 
     /**
@@ -167,7 +181,7 @@ public class DoorSensorController {
      */
     @ResponseBody
     @RequestMapping("/list_devices_bind")
-    public String listDevicesBybind(@RequestBody JSONObject params) {
+    public String listDevicesByBind(@RequestBody JSONObject params) {
         return doorSensorService.listByBind(params.getBoolean("is_bind"), 0, 10);
     }
 

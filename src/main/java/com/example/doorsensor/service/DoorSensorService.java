@@ -12,6 +12,10 @@ public interface DoorSensorService {
 
     String update(DoorSensor doorSensor);
 
+    String bind(String devEui, Long carId);
+
+    String unbind(String devEui);
+
     String delete(String devEui);
 
     String listByBindAndAlert(boolean bind, boolean alert, Integer page, Integer size);

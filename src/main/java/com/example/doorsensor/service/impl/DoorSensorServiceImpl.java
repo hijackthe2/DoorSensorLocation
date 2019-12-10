@@ -88,10 +88,13 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             log.warn("更新 -- 设备 DevEui {} 不存在", doorSensor.getDevEui());
             return ResponseUtils.fail("not found");
         }
+        if (projectRepository.findOneByName(doorSensor.getProjectName()) == null) {
+            log.warn("更新 -- 设备 DevEui {} 的项目 {} 不存在", doorSensor.getDevEui(), doorSensor.getProjectName());
+            return ResponseUtils.fail("not found");
+        }
         updateSensor.setDevName(doorSensor.getDevName());
         updateSensor.setCarId(doorSensor.getCarId());
         updateSensor.setProjectName(doorSensor.getProjectName());
-        updateSensor.setBind(doorSensor.getBind());
         updateSensor.setUpdateTime(LocalDateTime.now());
         if (doorSensorRepository.save(updateSensor) == null) {
             log.warn("更新 -- 设备 DevEui {} 更新失败", doorSensor.getDevEui());
@@ -112,6 +115,57 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         doorSensorRepository.deleteOnByDevEui(devEui);
         log.info("删除 -- 设备 DevEui {} 删除成功", devEui);
         return ResponseUtils.success("delete success");
+    }
+
+    @Transactional
+    @Override
+    public String bind(String devEui, Long carId) {
+        DoorSensor bindSensor = doorSensorRepository.findOneByDevEui(devEui);
+        if (bindSensor == null) {
+            log.warn("绑定 -- 设备 DevEui {} 不存在", devEui);
+            return ResponseUtils.fail("not found");
+        }
+        bindSensor.setBind(true);
+        bindSensor.setDevEui(devEui);
+        bindSensor.setCarId(carId);
+        bindSensor.setUpdateTime(LocalDateTime.now());
+        if (doorSensorRepository.save(bindSensor) == null) {
+            log.warn("绑定 -- 设备 DevEui {} 绑定失败", devEui);
+            return ResponseUtils.fail("update fail");
+        }
+        log.info("绑定 -- 设备 DevEui {} 绑定成功", devEui);
+        return ResponseUtils.success("bind success");
+    }
+
+    /**
+     * 解绑，并重置默认值
+     */
+    @Transactional
+    @Override
+    public String unbind(String devEui) {
+        DoorSensor unbindSensor = doorSensorRepository.findOneByDevEui(devEui);
+        if (unbindSensor == null) {
+            log.warn("解绑 -- 设备 DevEui {} 不存在", devEui);
+            return ResponseUtils.fail("not found");
+        }
+        unbindSensor.setBind(false);
+        unbindSensor.setDevEui(devEui);
+        unbindSensor.setCarId(-1L);
+        unbindSensor.setIndex(-1);
+        unbindSensor.setProjectName("");
+        unbindSensor.setAlert(false);
+        unbindSensor.setSensorStatus(0);
+        unbindSensor.setOpen(false);
+        unbindSensor.setBatteryStatus(0);
+        unbindSensor.setRemoved(false);
+        unbindSensor.setKeyStatus(0);
+        unbindSensor.setUpdateTime(LocalDateTime.now());
+        if (doorSensorRepository.save(unbindSensor) == null) {
+            log.warn("解绑 -- 设备 DevEui {} 解绑失败", devEui);
+            return ResponseUtils.fail("update fail");
+        }
+        log.info("解绑 -- 设备 DevEui {} 解绑成功", devEui);
+        return ResponseUtils.success("unbind success");
     }
 
     @Override
