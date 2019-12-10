@@ -166,15 +166,12 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             log.warn("查询 -- 查询设备失败");
             return ResponseUtils.fail("list devices fail");
         }
-        for (DoorSensor doorSensor : doorSensors) {
-            doorSensor.setId(null);
-            doorSensor.setIndex(null);
-        }
         log.info("查询 -- 查询设备成功");
         JSONObject object = new JSONObject();
         object.put("totalElements", doorSensors.getTotalElements());
         object.put("totalPages", doorSensors.getTotalPages());
         object.put("content", doorSensors.getContent());
+        object.put("numberOfElements", doorSensors.getNumberOfElements());
         return ResponseUtils.success(object);
     }
 
@@ -188,15 +185,12 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             log.warn("查询报警 -- 查询设备报警失败");
             return ResponseUtils.fail("list devices alert fail");
         }
-        for (DoorSensor doorSensor : doorSensors) {
-            doorSensor.setId(null);
-            doorSensor.setIndex(null);
-        }
         log.info("查询报警 -- 查询设备报警成功");
         JSONObject object = new JSONObject();
         object.put("totalElements", doorSensors.getTotalElements());
         object.put("totalPages", doorSensors.getTotalPages());
         object.put("content", doorSensors.getContent());
+        object.put("numberOfElements", doorSensors.getNumberOfElements());
         return ResponseUtils.success(object);
     }
 
@@ -210,15 +204,12 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             log.warn("查询绑定 -- 查询设备绑定失败");
             return ResponseUtils.fail("list device bind fail");
         }
-        for (DoorSensor doorSensor : doorSensors) {
-            doorSensor.setId(null);
-            doorSensor.setIndex(null);
-        }
         log.info("查询绑定 -- 查询设备绑定成功");
         JSONObject object = new JSONObject();
         object.put("totalElements", doorSensors.getTotalElements());
         object.put("totalPages", doorSensors.getTotalPages());
         object.put("content", doorSensors.getContent());
+        object.put("numberOfElements", doorSensors.getNumberOfElements());
         return ResponseUtils.success(object);
     }
 

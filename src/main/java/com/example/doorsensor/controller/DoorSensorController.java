@@ -154,8 +154,9 @@ public class DoorSensorController {
      */
     @ResponseBody
     @RequestMapping("/list_devices_status")
-    public String listDevicesByStatus() {
-        return doorSensorService.listStatus(0, 10);
+    public String listDevicesByStatus(@RequestBody JSONObject params) {
+        return doorSensorService.
+                listStatus(params.getInteger("page"), params.getInteger("size"));
     }
 
     /**
@@ -164,7 +165,8 @@ public class DoorSensorController {
     @ResponseBody
     @RequestMapping("/list_devices_alert")
     public String listDevicesByAlert(@RequestBody JSONObject params) {
-        return doorSensorService.listByBindAndAlert(true, params.getBoolean("is_alert"), 0, 10);
+        return doorSensorService.listByBindAndAlert(true,
+                params.getBoolean("is_alert"), params.getInteger("page"), params.getInteger("size"));
     }
 
     /**
@@ -172,8 +174,8 @@ public class DoorSensorController {
      */
     @ResponseBody
     @RequestMapping("/list_devices")
-    public String listDevices() {
-        return doorSensorService.listAll(0, 10);
+    public String listDevices(@RequestBody JSONObject params) {
+        return doorSensorService.listAll(params.getInteger("page"), params.getInteger("size"));
     }
 
     /**
@@ -182,7 +184,8 @@ public class DoorSensorController {
     @ResponseBody
     @RequestMapping("/list_devices_bind")
     public String listDevicesByBind(@RequestBody JSONObject params) {
-        return doorSensorService.listByBind(params.getBoolean("is_bind"), 0, 10);
+        return doorSensorService.listByBind(params.getBoolean("is_bind"),
+                params.getInteger("page"), params.getInteger("size"));
     }
 
     @ResponseBody
