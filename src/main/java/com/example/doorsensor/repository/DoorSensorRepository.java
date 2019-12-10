@@ -27,7 +27,7 @@ public interface DoorSensorRepository extends JpaRepository<DoorSensor, Long>,
     Page<DoorSensor> findAllByBind(boolean bind, Pageable pageable);
 
     @Query(value = "delete from door_sensor ds where ds.dev_eui = ?1", nativeQuery = true)
-    void deleteOnByDevEui(String devEui);
+    void deleteOneByDevEui(String devEui);
 
     @Query(value = "select * from door_sensor", nativeQuery = true)
     Page<DoorSensor> findAll(Pageable pageable);

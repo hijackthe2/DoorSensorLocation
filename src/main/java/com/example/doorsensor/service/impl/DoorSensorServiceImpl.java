@@ -52,10 +52,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         doorSensor.setKeyStatus(0);
         doorSensor.setIndex(-1);
         doorSensor.setUpdateTime(LocalDateTime.now());
-        if (doorSensorRepository.save(doorSensor) == null) {
-            log.warn("添加 -- 设备 DevEui {} 添加失败", doorSensor.getDevEui());
-            return ResponseUtils.fail("add fail");
-        }
+        doorSensorRepository.save(doorSensor);
         log.info("添加 -- 设备 DevEui {} 添加成功", doorSensor.getDevEui());
         return ResponseUtils.success("add success");
     }
@@ -96,10 +93,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         updateSensor.setCarId(doorSensor.getCarId());
         updateSensor.setProjectName(doorSensor.getProjectName());
         updateSensor.setUpdateTime(LocalDateTime.now());
-        if (doorSensorRepository.save(updateSensor) == null) {
-            log.warn("更新 -- 设备 DevEui {} 更新失败", doorSensor.getDevEui());
-            return ResponseUtils.fail("update fail");
-        }
+        doorSensorRepository.save(updateSensor);
         log.info("更新 -- 设备 DevEui {} 更新成功", doorSensor.getDevEui());
         return ResponseUtils.success("update success");
     }
@@ -112,7 +106,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             log.warn("删除 -- 设备 DevEui {} 不存在", devEui);
             return ResponseUtils.fail("not found");
         }
-        doorSensorRepository.deleteOnByDevEui(devEui);
+        doorSensorRepository.deleteOneByDevEui(devEui);
         log.info("删除 -- 设备 DevEui {} 删除成功", devEui);
         return ResponseUtils.success("delete success");
     }
@@ -129,10 +123,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         bindSensor.setDevEui(devEui);
         bindSensor.setCarId(carId);
         bindSensor.setUpdateTime(LocalDateTime.now());
-        if (doorSensorRepository.save(bindSensor) == null) {
-            log.warn("绑定 -- 设备 DevEui {} 绑定失败", devEui);
-            return ResponseUtils.fail("update fail");
-        }
+        doorSensorRepository.save(bindSensor);
         log.info("绑定 -- 设备 DevEui {} 绑定成功", devEui);
         return ResponseUtils.success("bind success");
     }
@@ -160,10 +151,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         unbindSensor.setRemoved(false);
         unbindSensor.setKeyStatus(0);
         unbindSensor.setUpdateTime(LocalDateTime.now());
-        if (doorSensorRepository.save(unbindSensor) == null) {
-            log.warn("解绑 -- 设备 DevEui {} 解绑失败", devEui);
-            return ResponseUtils.fail("update fail");
-        }
+        doorSensorRepository.save(unbindSensor);
         log.info("解绑 -- 设备 DevEui {} 解绑成功", devEui);
         return ResponseUtils.success("unbind success");
     }
@@ -183,7 +171,10 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             doorSensor.setIndex(null);
         }
         log.info("查询 -- 查询设备成功");
-        return ResponseUtils.success(doorSensors);
+        JSONObject object = new JSONObject();
+        object.put("total", doorSensors.getSize());
+        object.put("rows", doorSensors.getContent());
+        return ResponseUtils.success(object);
     }
 
     @Override
@@ -197,7 +188,10 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             return ResponseUtils.fail("list devices alert fail");
         }
         log.info("查询报警 -- 查询设备报警成功");
-        return ResponseUtils.success(doorSensors);
+        JSONObject object = new JSONObject();
+        object.put("total", doorSensors.getSize());
+        object.put("rows", doorSensors.getContent());
+        return ResponseUtils.success(object);
     }
 
     @Override
@@ -211,7 +205,10 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             return ResponseUtils.fail("list device bind fail");
         }
         log.info("查询绑定 -- 查询设备绑定成功");
-        return ResponseUtils.success(doorSensors);
+        JSONObject object = new JSONObject();
+        object.put("total", doorSensors.getSize());
+        object.put("rows", doorSensors.getContent());
+        return ResponseUtils.success(object);
     }
 
     @Override
