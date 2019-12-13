@@ -7,8 +7,11 @@ import com.example.doorsensor.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -121,7 +124,19 @@ public class WxSignatureServiceImpl implements WxSignatureService {
     }
 
     @Override
-    public JSONObject getSignature(String url, String appId, String secret) {
+    public JSONObject getSignature(String encodeURL, String appId, String secret) {
+        String url = "";
+        try {
+            //压制idea对"UTF-8"的警告
+            //noinspection CharsetObjectCanBeUsed
+            url = URLDecoder.decode(url, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (StringUtils.isEmpty(url)) {
+            log.warn("微信 -- 解码url {} 失败", encodeURL);
+            return ResponseUtils.fail("url decode fail");
+        }
         String token = getAccessToken(appId, secret);
         if (token == null) {
             log.warn("微信 -- 获取token失败");

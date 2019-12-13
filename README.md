@@ -35,3 +35,5 @@ use door sensor for location
 微信签名算法
 
 传递给前端的数据类型应为一个对象，即DTO
+
+跨域
