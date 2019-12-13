@@ -5,15 +5,16 @@ use door sensor for location
 pojo: 专指只有 setter / getter / toString 的简单类，包括 DO/DTO/BO/VO 等
 
     po: persistent object，持久对象，有时也被称为Data对象，对应数据库中的entity
-        可以简单认为一个PO对应数据库中的一条记录，PO中不应该包含任何对数据库的操作
+    
+        可以简单认为一个po对应数据库中的一条记录，po中不应该包含任何对数据库的操作
 
-    bo, business object, 业务层对象，对象的属性和当前业务逻辑所需的数据的名称一一对应，多个pojo的组合
+    bo: business object, 业务层对象，对象的属性和当前业务逻辑所需的数据的名称一一对应，多个pojo的组合
     
-    vo, view object, 表现层对象,对象的属性和页面展示的数据的名称一一对应，即前后台交互的时候需要封装对象的时候就是vo
+    vo: view object, 表现层对象,对象的属性和页面展示的数据的名称一一对应，即前后台交互的时候需要封装对象的时候就是vo
     
-    dto，data transfer object，数据传输对象，用在需要跨进程或远程传输时，它不应该包含业务逻辑
+    dto: data transfer object，数据传输对象，用在需要跨进程或远程传输时，它不应该包含业务逻辑
     
-    pojo, plain ordinary java object, 普通JAVA对象
+    pojo: plain ordinary java object, 普通JAVA对象
     
         pojo持久化之后 ==> po
         
