@@ -1,5 +1,6 @@
 package com.example.doorsensor.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.doorsensor.domain.DoorSensor;
 import com.example.doorsensor.domain.GateWayInfo;
 import com.example.doorsensor.factory.ParseStrategyBeanFactory;
@@ -28,7 +29,7 @@ public class ReceiveServiceImpl implements ReceiveService {
 
     @Transactional
     @Override
-    public String receiveSingleRequest(SingleRequest singleRequest) {
+    public JSONObject receiveSingleRequest(SingleRequest singleRequest) {
         long singleRequestId = singleRequestRepository.save(singleRequest).getId();
         for (GateWayInfo gateWayInfo : singleRequest.getGateWayInfoList()) {
             gateWayInfo.setSingleRequestId(singleRequestId);

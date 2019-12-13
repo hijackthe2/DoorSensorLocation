@@ -1,5 +1,6 @@
 package com.example.doorsensor.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.doorsensor.domain.DoorSensor;
 import com.example.doorsensor.domain.Project;
 import com.example.doorsensor.repository.DoorSensorRepository;
@@ -26,7 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public String add(Project project) {
+    public JSONObject add(Project project) {
         if (projectRepository.findOneByName(project.getName()) != null) {
             log.warn("添加 -- 项目 {} 已存在", project.getName());
             return ResponseUtils.fail("add fail");
@@ -43,7 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public String update(Project project) {
+    public JSONObject update(Project project) {
         if (isProjectNotExisting(project)) {
             log.warn("更新 -- 项目 {} 不存在", project.getName());
             return ResponseUtils.fail("not found");
@@ -59,7 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Transactional
     @Override
-    public String delete(Project project) {
+    public JSONObject delete(Project project) {
         if (isProjectNotExisting(project)) {
             log.warn("删除 -- 项目 {} 不存在", project.getName());
             return ResponseUtils.fail("not found");

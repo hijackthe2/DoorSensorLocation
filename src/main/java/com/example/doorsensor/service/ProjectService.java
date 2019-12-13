@@ -1,12 +1,13 @@
 package com.example.doorsensor.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.doorsensor.domain.Project;
 
 public interface ProjectService {
 
-    String add(Project project);
+    JSONObject add(Project project);
 
-    String update(Project project);
+    JSONObject update(Project project);
 
-    String delete(Project project);
+    JSONObject delete(Project project);
 }

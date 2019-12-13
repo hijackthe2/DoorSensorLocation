@@ -33,3 +33,5 @@ use door sensor for location
         如果该实现类被@Component注解时，注解中的value值将作为key，默认情况下为类名。
         
 微信签名算法
+
+传递给前端的数据类型应为一个对象，即DTO

@@ -51,6 +51,13 @@ public class WxSignatureServiceImpl implements WxSignatureService {
             return null;
         }
         JSONObject object = JSON.parseObject(responseBody);
+        if (object.getInteger("errcode") == null) {
+            TOKEN_EXPIRES_IN = object.getLongValue("expires_in");
+            TOKEN_TIMESTAMP = System.currentTimeMillis() / 1000;
+            ACCESS_TOKEN = object.getString("access_token");
+            log.info("微信 -- 获取微信token成功 {}", ACCESS_TOKEN);
+            return ACCESS_TOKEN;
+        }
         switch (object.getInteger("errcode")) {
             case -1:
                 try {
@@ -114,7 +121,7 @@ public class WxSignatureServiceImpl implements WxSignatureService {
     }
 
     @Override
-    public String getSignature(String url, String appId, String secret) {
+    public JSONObject getSignature(String url, String appId, String secret) {
         String token = getAccessToken(appId, secret);
         if (token == null) {
             log.warn("微信 -- 获取token失败");

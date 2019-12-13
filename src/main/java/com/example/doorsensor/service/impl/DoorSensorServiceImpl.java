@@ -31,7 +31,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional
     @Override
-    public String add(DoorSensor doorSensor) {
+    public JSONObject add(DoorSensor doorSensor) {
         if (projectRepository.findOneByName(doorSensor.getProjectName()) == null) {
             log.warn("添加 -- 设备 DevEui {} 绑定的项目 {} 不存在",
                     doorSensor.getDevEui(), doorSensor.getProjectName());
@@ -59,12 +59,11 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional // 默认只能捕获RuntimeException
     @Override
-    public String addBatch(List<DoorSensor> doorSensors) {
+    public JSONObject addBatch(List<DoorSensor> doorSensors) {
         for (DoorSensor doorSensor : doorSensors) {
-            String response = add(doorSensor);
+            JSONObject response = add(doorSensor);
             try {
-                JSONObject object = JSON.parseObject(response);
-                if (object.getInteger("code") != 0) {
+                if (response.getInteger("code") != 0) {
                     throw new RuntimeException("批量添加 -- 设备批量添加失败");
                 }
             } catch (RuntimeException e) {
@@ -79,7 +78,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional
     @Override
-    public String update(DoorSensor doorSensor) {
+    public JSONObject update(DoorSensor doorSensor) {
         DoorSensor updateSensor = doorSensorRepository.findOneByDevEui(doorSensor.getDevEui());
         if (updateSensor == null) {
             log.warn("更新 -- 设备 DevEui {} 不存在", doorSensor.getDevEui());
@@ -100,7 +99,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional
     @Override
-    public String delete(String devEui) {
+    public JSONObject delete(String devEui) {
         DoorSensor deleteSensor = doorSensorRepository.findOneByDevEui(devEui);
         if (deleteSensor == null) {
             log.warn("删除 -- 设备 DevEui {} 不存在", devEui);
@@ -113,7 +112,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional
     @Override
-    public String bind(String devEui, Long carId) {
+    public JSONObject bind(String devEui, Long carId) {
         DoorSensor bindSensor = doorSensorRepository.findOneByDevEui(devEui);
         if (bindSensor == null) {
             log.warn("绑定 -- 设备 DevEui {} 不存在", devEui);
@@ -133,7 +132,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
      */
     @Transactional
     @Override
-    public String unbind(String devEui) {
+    public JSONObject unbind(String devEui) {
         DoorSensor unbindSensor = doorSensorRepository.findOneByDevEui(devEui);
         if (unbindSensor == null) {
             log.warn("解绑 -- 设备 DevEui {} 不存在", devEui);
@@ -157,7 +156,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
     }
 
     @Override
-    public String listAll(Integer page, Integer size) {
+    public JSONObject listAll(Integer page, Integer size) {
         page = null == page ? 0 : page;
         size = null == size ? 10 : size;
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
@@ -176,7 +175,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
     }
 
     @Override
-    public String listByBindAndAlert(boolean bind, boolean alert, Integer page, Integer size) {
+    public JSONObject listByBindAndAlert(boolean bind, boolean alert, Integer page, Integer size) {
         page = null == page ? 0 : page;
         size = null == size ? 10 : size;
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
@@ -195,7 +194,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
     }
 
     @Override
-    public String listByBind(boolean bind, Integer page, Integer size) {
+    public JSONObject listByBind(boolean bind, Integer page, Integer size) {
         page = null == page ? 0 : page;
         size = null == size ? 10 : size;
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
@@ -214,18 +213,18 @@ public class DoorSensorServiceImpl implements DoorSensorService {
     }
 
     @Override
-    public String listStatus(Integer page, Integer size) {
-        JSONObject alertObject = JSON.parseObject(listByBindAndAlert(true, true, null, null));
+    public JSONObject listStatus(Integer page, Integer size) {
+        JSONObject alertObject = listByBindAndAlert(true, true, null, null);
         if (alertObject.getInteger("code") != 0) {
             log.warn("绑定报警车辆查询 -- 报警车辆查询失败");
             return ResponseUtils.fail("list devices alert fail");
         }
-        JSONObject normalObject = JSON.parseObject(listByBindAndAlert(true, false, null, null));
+        JSONObject normalObject = listByBindAndAlert(true, false, null, null);
         if (normalObject.getInteger("code") != 0) {
             log.warn("绑定报警车辆查询 -- 正常车辆查询失败");
             return ResponseUtils.fail("list devices normal fail");
         }
-        JSONObject unBindObject = JSON.parseObject(listByBind(false, null, null));
+        JSONObject unBindObject = listByBind(false, null, null);
         if (unBindObject.getInteger("code") != 0) {
             log.warn("绑定报警车辆查询 -- 解绑车辆查询失败");
             return ResponseUtils.fail("list devices unbind fail");
