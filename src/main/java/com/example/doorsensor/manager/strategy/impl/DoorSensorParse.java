@@ -1,12 +1,12 @@
-package com.example.doorsensor.strategy.impl;
+package com.example.doorsensor.manager.strategy.impl;
 
-import com.example.doorsensor.domain.DoorSensor;
-import com.example.doorsensor.domain.GateWayInfo;
-import com.example.doorsensor.domain.Project;
-import com.example.doorsensor.domain.SingleRequest;
-import com.example.doorsensor.repository.DoorSensorRepository;
-import com.example.doorsensor.repository.ProjectRepository;
-import com.example.doorsensor.strategy.ParseStrategy;
+import com.example.doorsensor.pojo.entity.DoorSensor;
+import com.example.doorsensor.pojo.entity.GateWayInfo;
+import com.example.doorsensor.pojo.entity.Project;
+import com.example.doorsensor.pojo.entity.SingleRequest;
+import com.example.doorsensor.pojo.repository.DoorSensorRepository;
+import com.example.doorsensor.pojo.repository.ProjectRepository;
+import com.example.doorsensor.manager.strategy.ParseStrategy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

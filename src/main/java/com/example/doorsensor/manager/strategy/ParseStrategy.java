@@ -1,6 +1,6 @@
-package com.example.doorsensor.strategy;
+package com.example.doorsensor.manager.strategy;
 
-import com.example.doorsensor.domain.SingleRequest;
+import com.example.doorsensor.pojo.entity.SingleRequest;
 
 public interface ParseStrategy {
 

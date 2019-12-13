@@ -1,12 +1,12 @@
 package com.example.doorsensor.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.doorsensor.domain.DoorSensor;
-import com.example.doorsensor.domain.GateWayInfo;
-import com.example.doorsensor.factory.ParseStrategyBeanFactory;
-import com.example.doorsensor.domain.SingleRequest;
-import com.example.doorsensor.repository.GateWayInfoRepository;
-import com.example.doorsensor.repository.SingleRequestRepository;
+import com.example.doorsensor.pojo.entity.DoorSensor;
+import com.example.doorsensor.pojo.entity.GateWayInfo;
+import com.example.doorsensor.manager.factory.ParseStrategyBeanFactory;
+import com.example.doorsensor.pojo.entity.SingleRequest;
+import com.example.doorsensor.pojo.repository.GateWayInfoRepository;
+import com.example.doorsensor.pojo.repository.SingleRequestRepository;
 import com.example.doorsensor.service.ReceiveService;
 import com.example.doorsensor.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,7 @@
 package com.example.doorsensor.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.doorsensor.domain.DoorSensor;
+import com.example.doorsensor.pojo.entity.DoorSensor;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface DoorSensorService {
 
     JSONObject update(DoorSensor doorSensor);
 
-    JSONObject bind(String devEui, Long carId);
+    JSONObject bind(String devEui, String carId);
 
     JSONObject unbind(String devEui);
 

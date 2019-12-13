@@ -1,4 +1,4 @@
-package com.example.doorsensor.domain;
+package com.example.doorsensor.pojo.entity;
 
 import javax.persistence.*;
 
@@ -13,7 +13,7 @@ public class GateWayInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     /**
      * 下行帧区号
@@ -41,48 +41,48 @@ public class GateWayInfo {
      */
     @Basic
     @Column(name = "rssi")
-    private float rssi = 0;
+    private Float rssi;
 
     /**
      * 信噪比
      */
     @Basic
     @Column(name = "lsnr")
-    private float lsnr = 0;
+    private Float lsnr;
 
     /**
      * 高度
      */
     @Basic
     @Column(name = "alti")
-    private float alti = 0;
+    private Float alti;
 
     /**
      * 经度
      */
     @Basic
     @Column(name = "lng")
-    private float lng = 0;
+    private Float lng;
 
     /**
      * 维度
      */
     @Basic
     @Column(name = "lati")
-    private float lati = 0;
+    private Float lati;
 
     /**
      * 对应的单条接口请求
      */
     @Basic
     @Column(name = "single_request_id")
-    private long singleRequestId;
+    private Long singleRequestId;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -110,55 +110,67 @@ public class GateWayInfo {
         this.gwEui = gwEui;
     }
 
-    public float getRssi() {
+    public Float getRssi() {
         return rssi;
     }
 
-    public void setRssi(float rssi) {
+    public void setRssi(Float rssi) {
         this.rssi = rssi;
     }
 
-    public float getLsnr() {
+    public Float getLsnr() {
         return lsnr;
     }
 
-    public void setLsnr(float lsnr) {
+    public void setLsnr(Float lsnr) {
         this.lsnr = lsnr;
     }
 
-    public float getAlti() {
+    public Float getAlti() {
         return alti;
     }
 
-    public void setAlti(float alti) {
+    public void setAlti(Float alti) {
         this.alti = alti;
     }
 
-    public float getLng() {
+    public Float getLng() {
         return lng;
     }
 
-    public void setLng(float lng) {
+    public void setLng(Float lng) {
         this.lng = lng;
     }
 
-    public float getLati() {
+    public Float getLati() {
         return lati;
     }
 
-    public void setLati(float lati) {
+    public void setLati(Float lati) {
         this.lati = lati;
     }
 
-    public void setLati(Integer lati) {
-        this.lati = lati;
-    }
-
-    public long getSingleRequestId() {
+    public Long getSingleRequestId() {
         return singleRequestId;
     }
 
-    public void setSingleRequestId(long singleRequestId) {
+    public void setSingleRequestId(Long singleRequestId) {
         this.singleRequestId = singleRequestId;
+    }
+
+    @Override
+    public String toString() {
+        return "GateWayInfo{" +
+                "id=" + id +
+                ", fcntDown='" + fcntDown + '\'' +
+                ", fcntUp='" + fcntUp + '\'' +
+                ", gwEui='" + gwEui + '\'' +
+                ", rssi=" + rssi +
+                ", lsnr=" + lsnr +
+                ", alti=" + alti +
+                ", lng=" + lng +
+                ", lati=" + lati +
+                ", singleRequestId=" + singleRequestId +
+                '}';
     }
 }

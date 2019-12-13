@@ -1,6 +1,6 @@
-package com.example.doorsensor.repository;
+package com.example.doorsensor.pojo.repository;
 
-import com.example.doorsensor.domain.DoorSensor;
+import com.example.doorsensor.pojo.entity.DoorSensor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

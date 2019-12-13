@@ -1,10 +1,9 @@
 package com.example.doorsensor.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.doorsensor.domain.DoorSensor;
-import com.example.doorsensor.repository.DoorSensorRepository;
-import com.example.doorsensor.repository.ProjectRepository;
+import com.example.doorsensor.pojo.entity.DoorSensor;
+import com.example.doorsensor.pojo.repository.DoorSensorRepository;
+import com.example.doorsensor.pojo.repository.ProjectRepository;
 import com.example.doorsensor.service.DoorSensorService;
 import com.example.doorsensor.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,8 +42,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
             return ResponseUtils.fail("already existed");
         }
         doorSensor.setCreateTime(LocalDateTime.now());
-        boolean bind = doorSensor.getCarId() != null && doorSensor.getCarId() > 0;
-        doorSensor.setBind(bind);
+        doorSensor.setBind(!StringUtils.isEmpty(doorSensor.getCarId()));
         doorSensor.setAlert(false);
         doorSensor.setSensorStatus(0);
         doorSensor.setOpen(false);
@@ -112,7 +111,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
 
     @Transactional
     @Override
-    public JSONObject bind(String devEui, Long carId) {
+    public JSONObject bind(String devEui, String carId) {
         DoorSensor bindSensor = doorSensorRepository.findOneByDevEui(devEui);
         if (bindSensor == null) {
             log.warn("绑定 -- 设备 DevEui {} 不存在", devEui);
@@ -140,7 +139,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         }
         unbindSensor.setBind(false);
         unbindSensor.setDevEui(devEui);
-        unbindSensor.setCarId(-1L);
+        unbindSensor.setCarId("");
         unbindSensor.setIndex(-1);
         unbindSensor.setProjectName("");
         unbindSensor.setAlert(false);

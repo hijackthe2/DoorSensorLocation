@@ -1,4 +1,4 @@
-package com.example.doorsensor.filter;
+package com.example.doorsensor.web.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

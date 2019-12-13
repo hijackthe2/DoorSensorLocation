@@ -1,6 +1,21 @@
 # Door Sensor Location
 use door sensor for location
 
+## 整体框架
+pojo: 专指只有 setter / getter / toString 的简单类，包括 DO/DTO/BO/VO 等
+
+manager: 通用业务处理层，它有如下特征：
+
+    1） 对第三方平台封装的层，预处理返回结果及转化异常信息；
+    
+    2） 对 Service 层通用能力的下沉，如缓存方案、中间件通用处理；
+    
+    3） 与 DAO 层交互，对多个 DAO 的组合复用
+
+service: 相对具体的业务逻辑服务层
+
+web: 主要是对访问控制进行转发，各类基本参数校验，或者不复用的业务简单处理等
+
 搭建：maven
 
 框架：spring boot

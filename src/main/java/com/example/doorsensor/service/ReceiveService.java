@@ -1,7 +1,7 @@
 package com.example.doorsensor.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.doorsensor.domain.SingleRequest;
+import com.example.doorsensor.pojo.entity.SingleRequest;
 
 /**
  * @author yyl

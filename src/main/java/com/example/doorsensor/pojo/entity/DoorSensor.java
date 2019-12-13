@@ -1,4 +1,4 @@
-package com.example.doorsensor.domain;
+package com.example.doorsensor.pojo.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -38,21 +38,21 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "car_id")
-    private Long carId = null;
+    private String carId;
 
     /**
      * 是否绑定车辆
      */
     @Basic
     @Column(name = "is_bind")
-    private Boolean isBind = false;
+    private Boolean isBind;
 
     /**
      * 设备异常报警
      */
     @Basic
     @Column(name = "is_alert")
-    private Boolean isAlert = false;
+    private Boolean isAlert;
 
     /**
      * 设备进入数据库的时间
@@ -60,7 +60,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "create_time")
-    private LocalDateTime createTime = LocalDateTime.now();
+    private LocalDateTime createTime;
 
     /**
      * 设备更新数据的时间
@@ -68,7 +68,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "update_time")
-    private LocalDateTime updateTime = LocalDateTime.now();
+    private LocalDateTime updateTime;
 
     /**
      * 设备接入项目的id
@@ -82,42 +82,42 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "sensor_status")
-    private Integer sensorStatus = 0;
+    private Integer sensorStatus;
 
     /**
      * 门磁状态 true(3)开门 false(0)关门
      */
     @Basic
     @Column(name = "is_open")
-    private Boolean isOpen = false;
+    private Boolean isOpen;
 
     /**
      * 电池状态 0正常 1低电 其他（保留）
      */
     @Basic
     @Column(name = "battery_status")
-    private Integer batteryStatus = 0;
+    private Integer batteryStatus;
 
     /**
      * 防拆状态 false(0)正常 true(1)被拆
      */
     @Basic
     @Column(name = "is_removed")
-    private Boolean isRemoved = false;
+    private Boolean isRemoved;
 
     /**
      * 按键状态 0正常 1测试 2消音
      */
     @Basic
     @Column(name = "key_status")
-    private Integer keyStatus = 0;
+    private Integer keyStatus;
 
     /**
      * 计数 0~255 循环计数
      */
     @Basic
     @Column(name = "data_index")
-    private Integer index = -1;
+    private Integer index;
 
     public Long getId() {
         return id;
@@ -143,11 +143,11 @@ public class DoorSensor {
         this.devName = devName;
     }
 
-    public Long getCarId() {
+    public String getCarId() {
         return carId;
     }
 
-    public void setCarId(Long carId) {
+    public void setCarId(String carId) {
         this.carId = carId;
     }
 
@@ -237,5 +237,26 @@ public class DoorSensor {
 
     public void setIndex(Integer index) {
         this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        return "DoorSensor{" +
+                "id=" + id +
+                ", devEui='" + devEui + '\'' +
+                ", devName='" + devName + '\'' +
+                ", carId='" + carId + '\'' +
+                ", isBind=" + isBind +
+                ", isAlert=" + isAlert +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", projectName='" + projectName + '\'' +
+                ", sensorStatus=" + sensorStatus +
+                ", isOpen=" + isOpen +
+                ", batteryStatus=" + batteryStatus +
+                ", isRemoved=" + isRemoved +
+                ", keyStatus=" + keyStatus +
+                ", index=" + index +
+                '}';
     }
 }

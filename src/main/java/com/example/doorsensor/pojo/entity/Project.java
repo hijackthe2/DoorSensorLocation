@@ -1,4 +1,4 @@
-package com.example.doorsensor.domain;
+package com.example.doorsensor.pojo.entity;
 
 import org.springframework.util.StringUtils;
 
@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * @author yyl
  * 项目
+ * POJO 专指只有 setter / getter / toString 的简单类
  */
 @Entity
 @Table(name = "project", schema = "doorsensor")
@@ -178,5 +179,21 @@ public class Project {
 
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", gwEui1='" + gwEui1 + '\'' +
+                ", gwEui2='" + gwEui2 + '\'' +
+                ", gwEui3='" + gwEui3 + '\'' +
+                ", gwEui4='" + gwEui4 + '\'' +
+                ", gwEui5='" + gwEui5 + '\'' +
+                ", creator='" + creator + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                '}';
     }
 }

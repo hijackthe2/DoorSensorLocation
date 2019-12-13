@@ -1,4 +1,4 @@
-package com.example.doorsensor.domain;
+package com.example.doorsensor.pojo.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ public class SingleRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     /**
      * 设备唯一编号
@@ -38,7 +38,7 @@ public class SingleRequest {
      */
     @Basic
     @Column(name = "last_update_time")
-    private LocalDateTime lastUpdateTime = LocalDateTime.now();
+    private LocalDateTime lastUpdateTime;
 
     /**
      * 设备传输数据
@@ -64,16 +64,16 @@ public class SingleRequest {
      */
     @Basic
     @Column(name = "data_type")
-    private Integer dataType = 223;
+    private Integer dataType;
 
     @Transient
     private List<GateWayInfo> gateWayInfoList;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -135,5 +135,19 @@ public class SingleRequest {
 
     public void setGateWayInfoList(List<GateWayInfo> gateWayInfoList) {
         this.gateWayInfoList = gateWayInfoList;
+    }
+
+    @Override
+    public String toString() {
+        return "SingleRequest{" +
+                "id=" + id +
+                ", devEui='" + devEui + '\'' +
+                ", appEui='" + appEui + '\'' +
+                ", lastUpdateTime=" + lastUpdateTime +
+                ", data='" + data + '\'' +
+                ", reserver='" + reserver + '\'' +
+                ", dataType=" + dataType +
+                ", gateWayInfoList=" + gateWayInfoList +
+                '}';
     }
 }

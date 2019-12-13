@@ -1,11 +1,11 @@
-package com.example.doorsensor.controller;
+package com.example.doorsensor.web.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.doorsensor.domain.DoorSensor;
-import com.example.doorsensor.domain.GateWayInfo;
-import com.example.doorsensor.domain.Project;
-import com.example.doorsensor.domain.SingleRequest;
+import com.example.doorsensor.pojo.entity.DoorSensor;
+import com.example.doorsensor.pojo.entity.GateWayInfo;
+import com.example.doorsensor.pojo.entity.Project;
+import com.example.doorsensor.pojo.entity.SingleRequest;
 import com.example.doorsensor.service.DoorSensorService;
 import com.example.doorsensor.service.ProjectService;
 import com.example.doorsensor.service.ReceiveService;
@@ -92,7 +92,7 @@ public class DoorSensorController {
         DoorSensor doorSensor = new DoorSensor();
         doorSensor.setDevEui(params.getString("deveui").toUpperCase());
         doorSensor.setDevName(params.getString("devname"));
-        doorSensor.setCarId(params.getLong("carid"));
+        doorSensor.setCarId(params.getString("carid"));
         doorSensor.setProjectName(params.getString("projectname"));
         return doorSensorService.add(doorSensor);
     }
@@ -110,7 +110,7 @@ public class DoorSensorController {
             DoorSensor doorSensor = new DoorSensor();
             doorSensor.setDevEui(object.getString("deveui").toUpperCase());
             doorSensor.setDevName(object.getString("devname"));
-            doorSensor.setCarId(object.getLong("carid"));
+            doorSensor.setCarId(object.getString("carid"));
             doorSensor.setProjectName(object.getString("projectname"));
             doorSensors.add(doorSensor);
         }
@@ -126,7 +126,7 @@ public class DoorSensorController {
         DoorSensor doorSensor = new DoorSensor();
         doorSensor.setDevEui(params.getString("deveui").toUpperCase());
         doorSensor.setDevName(params.getString("devname"));
-        doorSensor.setCarId(params.getLong("carid"));
+        doorSensor.setCarId(params.getString("carid"));
         doorSensor.setProjectName(params.getString("projectname"));
         return doorSensorService.update(doorSensor);
     }
@@ -140,7 +140,7 @@ public class DoorSensorController {
     @ResponseBody
     @RequestMapping("/bind_device")
     public JSONObject bindDevice(@RequestBody JSONObject params) {
-        return doorSensorService.bind(params.getString("deveui").toUpperCase(), params.getLong("carid"));
+        return doorSensorService.bind(params.getString("deveui").toUpperCase(), params.getString("carid"));
     }
 
     @ResponseBody

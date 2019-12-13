@@ -1,6 +1,6 @@
-package com.example.doorsensor.factory;
+package com.example.doorsensor.manager.factory;
 
-import com.example.doorsensor.strategy.ParseStrategy;
+import com.example.doorsensor.manager.strategy.ParseStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,6 @@
-package com.example.doorsensor.repository;
+package com.example.doorsensor.pojo.repository;
 
-import com.example.doorsensor.domain.SingleRequest;
+import com.example.doorsensor.pojo.entity.SingleRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
