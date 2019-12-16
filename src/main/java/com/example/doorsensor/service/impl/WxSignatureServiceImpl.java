@@ -19,6 +19,15 @@ import java.util.Formatter;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * 微信签名算法实现
+ * 应该将对应的app_id、app_secret作为主键存入数据库中
+ * 否则new多个WxSignatureService的实例获取token及ticket会出现问题
+ * 存入数据是最好的解决方法，为了防止一段时间内多次访问，可以定义私有static成员变量
+ * 每次判断app_id、app_secret是否一致
+ * 若一致，不用访问数据库
+ * 否则，访问数据库，并刷新相关成员变量
+ */
 @Service
 @Slf4j
 public class WxSignatureServiceImpl implements WxSignatureService {
