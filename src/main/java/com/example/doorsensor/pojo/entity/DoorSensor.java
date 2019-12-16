@@ -45,14 +45,14 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "is_bind")
-    private Boolean isBind;
+    private Boolean bind;
 
     /**
      * 设备异常报警
      */
     @Basic
     @Column(name = "is_alert")
-    private Boolean isAlert;
+    private Boolean alert;
 
     /**
      * 设备进入数据库的时间
@@ -89,7 +89,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "is_open")
-    private Boolean isOpen;
+    private Boolean open;
 
     /**
      * 电池状态 0正常 1低电 其他（保留）
@@ -103,7 +103,7 @@ public class DoorSensor {
      */
     @Basic
     @Column(name = "is_removed")
-    private Boolean isRemoved;
+    private Boolean removed;
 
     /**
      * 按键状态 0正常 1测试 2消音
@@ -152,19 +152,19 @@ public class DoorSensor {
     }
 
     public Boolean getBind() {
-        return isBind;
+        return bind;
     }
 
     public void setBind(Boolean bind) {
-        isBind = bind;
+        this.bind = bind;
     }
 
     public Boolean getAlert() {
-        return isAlert;
+        return alert;
     }
 
     public void setAlert(Boolean alert) {
-        isAlert = alert;
+        this.alert = alert;
     }
 
     public LocalDateTime getCreateTime() {
@@ -200,11 +200,11 @@ public class DoorSensor {
     }
 
     public Boolean isOpen() {
-        return isOpen;
+        return open;
     }
 
     public void setOpen(Boolean open) {
-        isOpen = open;
+        this.open = open;
     }
 
     public Integer getBatteryStatus() {
@@ -216,11 +216,11 @@ public class DoorSensor {
     }
 
     public Boolean isRemoved() {
-        return isRemoved;
+        return removed;
     }
 
     public void setRemoved(Boolean removed) {
-        isRemoved = removed;
+        this.removed = removed;
     }
 
     public Integer getKeyStatus() {
@@ -246,15 +246,15 @@ public class DoorSensor {
                 ", devEui='" + devEui + '\'' +
                 ", devName='" + devName + '\'' +
                 ", carId='" + carId + '\'' +
-                ", isBind=" + isBind +
-                ", isAlert=" + isAlert +
+                ", isBind=" + bind +
+                ", isAlert=" + alert +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", projectName='" + projectName + '\'' +
                 ", sensorStatus=" + sensorStatus +
-                ", isOpen=" + isOpen +
+                ", isOpen=" + open +
                 ", batteryStatus=" + batteryStatus +
-                ", isRemoved=" + isRemoved +
+                ", isRemoved=" + removed +
                 ", keyStatus=" + keyStatus +
                 ", index=" + index +
                 '}';

@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.doorsensor.pojo.entity.DoorSensor;
 import com.example.doorsensor.pojo.repository.DoorSensorRepository;
 import com.example.doorsensor.pojo.repository.ProjectRepository;
+import com.example.doorsensor.pojo.vo.DoorSensorVO;
 import com.example.doorsensor.service.DoorSensorService;
+import com.example.doorsensor.util.BeanUtils;
 import com.example.doorsensor.util.ResponseUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -168,7 +171,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         JSONObject object = new JSONObject();
         object.put("totalElements", doorSensors.getTotalElements());
         object.put("totalPages", doorSensors.getTotalPages());
-        object.put("content", doorSensors.getContent());
+        object.put("content", transform(doorSensors.getContent()));
         object.put("numberOfElements", doorSensors.getNumberOfElements());
         return ResponseUtils.success(object);
     }
@@ -187,7 +190,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         JSONObject object = new JSONObject();
         object.put("totalElements", doorSensors.getTotalElements());
         object.put("totalPages", doorSensors.getTotalPages());
-        object.put("content", doorSensors.getContent());
+        object.put("content", transform(doorSensors.getContent()));
         object.put("numberOfElements", doorSensors.getNumberOfElements());
         return ResponseUtils.success(object);
     }
@@ -206,7 +209,7 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         JSONObject object = new JSONObject();
         object.put("totalElements", doorSensors.getTotalElements());
         object.put("totalPages", doorSensors.getTotalPages());
-        object.put("content", doorSensors.getContent());
+        object.put("content", transform(doorSensors.getContent()));
         object.put("numberOfElements", doorSensors.getNumberOfElements());
         return ResponseUtils.success(object);
     }
@@ -234,6 +237,16 @@ public class DoorSensorServiceImpl implements DoorSensorService {
         object.put("normal", normalObject.get("msg"));
         object.put("unbind", unBindObject.get("msg"));
         return ResponseUtils.success(object);
+    }
+
+    private List<DoorSensorVO> transform(List<DoorSensor> doorSensors) {
+        List<DoorSensorVO> vos = new ArrayList<>();
+        for (DoorSensor sensor : doorSensors) {
+            DoorSensorVO vo = new DoorSensorVO();
+            BeanUtils.shallowCopyProperties(vo, sensor);
+            vos.add(vo);
+        }
+        return vos;
     }
 
 }

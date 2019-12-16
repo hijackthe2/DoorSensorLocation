@@ -1,12 +1,12 @@
-package com.example.doorsensor.pojo.dto;
+package com.example.doorsensor.pojo.vo;
 
 import java.time.LocalDateTime;
 
 /**
  * @author yyl
- * 适用于DoorSensor类的DTO
+ * 适用于DoorSensor类的VO
  */
-public class DoorSensorDTO {
+public class DoorSensorVO {
 
     private String devEui;
     private String devName;
