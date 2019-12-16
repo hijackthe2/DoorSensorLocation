@@ -65,7 +65,7 @@ public class ProjectServiceImpl implements ProjectService {
             log.warn("删除 -- 项目 {} 不存在", project.getName());
             return ResponseUtils.fail("not found");
         }
-        List<DoorSensor> doorSensors = doorSensorRepository.findAllByProjectId(project.getId());
+        List<DoorSensor> doorSensors = doorSensorRepository.findAllByProjectName(project.getName());
         for (DoorSensor doorSensor : doorSensors) {
             doorSensor.setProjectName("");
         }

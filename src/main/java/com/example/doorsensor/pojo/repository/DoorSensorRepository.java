@@ -18,8 +18,8 @@ public interface DoorSensorRepository extends JpaRepository<DoorSensor, Long>,
     @Query(value = "select * from door_sensor ds where ds.dev_eui = ?1", nativeQuery = true)
     DoorSensor findOneByDevEui(String devEui);
 
-    @Query(value = "select * from door_sensor ds where ds.project_id = ?1", nativeQuery = true)
-    List<DoorSensor> findAllByProjectId(long projectId);
+    @Query(value = "select * from door_sensor ds where ds.project_pk_name = ?1", nativeQuery = true)
+    List<DoorSensor> findAllByProjectName(String projectId);
 
     @Query(value = "select * from door_sensor ds where ds.is_bind = ?1 and ds.is_alert = ?2", nativeQuery = true)
     Page<DoorSensor> findAllByBindAndAlert(boolean bind, boolean alert, Pageable pageable);
@@ -33,4 +33,13 @@ public interface DoorSensorRepository extends JpaRepository<DoorSensor, Long>,
 
     @Query(value = "select * from door_sensor", nativeQuery = true)
     Page<DoorSensor> findAll(Pageable pageable);
+
+    @Query(value = "select * from door_sensor ds where ds.is_bind = ?1 and ds.is_alert = ?2 and ds.project_pk_name = ?3", nativeQuery = true)
+    Page<DoorSensor> findAllByBindAndAlertAndProject(boolean bind, boolean alert, String name, Pageable pageable);
+
+    @Query(value = "select * from door_sensor ds where ds.is_bind = ?1 and ds.project_pk_name = ?2", nativeQuery = true)
+    Page<DoorSensor> findAllByBindAndProject(boolean bind, String name, Pageable pageable);
+
+    @Query(value = "select * from door_sensor ds where ds.project_pk_name = ?1", nativeQuery = true)
+    Page<DoorSensor> findAllByProject(String name, Pageable pageable);
 }

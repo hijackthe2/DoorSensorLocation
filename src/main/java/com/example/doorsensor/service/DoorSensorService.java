@@ -27,4 +27,12 @@ public interface DoorSensorService {
 
     JSONObject listByBind(boolean bind, Integer page, Integer size);
 
+    JSONObject listByBindAndAlertAndProject(boolean bind, boolean alert, String projectName, Integer page, Integer size);
+
+    JSONObject listByProject(String projectName, Integer page, Integer size);
+
+    JSONObject listStatusAndProject(String projectName, Integer page, Integer size);
+
+    JSONObject listByBindAndProject(boolean bind, String projectName, Integer page, Integer size);
+
 }

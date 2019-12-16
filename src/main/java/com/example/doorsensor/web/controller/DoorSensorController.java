@@ -150,41 +150,41 @@ public class DoorSensorController {
     }
 
     /**
-     * 查询设备列表，并分状态返回结果（alert，normal，unbind）
+     * 按照项目，查询设备列表，并分状态返回结果（alert，normal，unbind）
      */
     @ResponseBody
-    @RequestMapping("/list_devices_status")
-    public JSONObject listDevicesByStatus(@RequestBody JSONObject params) {
+    @RequestMapping("/list_devices_status_project")
+    public JSONObject listDevicesByStatusAndProject(@RequestBody JSONObject params) {
         return doorSensorService.
-                listStatus(params.getInteger("page"), params.getInteger("size"));
+                listStatusAndProject(params.getString("projectname"), params.getInteger("page"), params.getInteger("size"));
     }
 
     /**
-     * 按照是否报警查询
+     * 按照项目及是否报警查询
      */
     @ResponseBody
-    @RequestMapping("/list_devices_alert")
-    public JSONObject listDevicesByAlert(@RequestBody JSONObject params) {
-        return doorSensorService.listByBindAndAlert(true,
-                params.getBoolean("is_alert"), params.getInteger("page"), params.getInteger("size"));
+    @RequestMapping("/list_devices_alert_project")
+    public JSONObject listDevicesByAlertAndProject(@RequestBody JSONObject params) {
+        return doorSensorService.listByBindAndAlertAndProject(true,
+                params.getBoolean("is_alert"), params.getString("projectname"), params.getInteger("page"), params.getInteger("size"));
     }
 
     /**
-     * 返回所有设备，不分状态
+     * 按照项目返回所有设备，不分状态
      */
     @ResponseBody
-    @RequestMapping("/list_devices")
-    public JSONObject listDevices(@RequestBody JSONObject params) {
-        return doorSensorService.listAll(params.getInteger("page"), params.getInteger("size"));
+    @RequestMapping("/list_devices_project")
+    public JSONObject listDevicesByProject(@RequestBody JSONObject params) {
+        return doorSensorService.listByProject(params.getString("projectname"), params.getInteger("page"), params.getInteger("size"));
     }
 
     /**
-     * 按照是否绑定查询
+     * 按照项目及是否绑定查询
      */
     @ResponseBody
-    @RequestMapping("/list_devices_bind")
-    public JSONObject listDevicesByBind(@RequestBody JSONObject params) {
-        return doorSensorService.listByBind(params.getBoolean("is_bind"),
+    @RequestMapping("/list_devices_bind_project")
+    public JSONObject listDevicesByBindAndProject(@RequestBody JSONObject params) {
+        return doorSensorService.listByBindAndProject(params.getBoolean("is_bind"), params.getString("projectname"),
                 params.getInteger("page"), params.getInteger("size"));
     }
 

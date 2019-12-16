@@ -158,6 +158,104 @@ public class DoorSensorServiceImpl implements DoorSensorService {
     }
 
     @Override
+    public JSONObject listByBindAndAlertAndProject(boolean bind, boolean alert, String projectName, Integer page, Integer size) {
+        if (projectRepository.findOneByName(projectName) == null) {
+            log.warn("查询报警 -- 项目 {} 不存在", projectName);
+            return ResponseUtils.fail("project not found");
+        }
+        page = null == page ? 0 : page;
+        size = null == size ? 10 : size;
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
+        Page<DoorSensor> doorSensors = doorSensorRepository.findAllByBindAndAlertAndProject(bind, alert, projectName, pageable);
+        if (doorSensors == null) {
+            log.warn("查询报警 -- 查询设备报警失败");
+            return ResponseUtils.fail("list devices alert fail");
+        }
+        log.info("查询报警 -- 查询设备报警成功");
+        JSONObject object = new JSONObject();
+        object.put("totalElements", doorSensors.getTotalElements());
+        object.put("totalPages", doorSensors.getTotalPages());
+        object.put("content", transform(doorSensors.getContent()));
+        object.put("numberOfElements", doorSensors.getNumberOfElements());
+        return ResponseUtils.success(object);
+    }
+
+    @Override
+    public JSONObject listByProject(String projectName, Integer page, Integer size) {
+        if (projectRepository.findOneByName(projectName) == null) {
+            log.warn("查询 -- 项目 {} 不存在", projectName);
+            return ResponseUtils.fail("project not found");
+        }
+        page = null == page ? 0 : page;
+        size = null == size ? 10 : size;
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
+        Page<DoorSensor> doorSensors = doorSensorRepository.findAllByProject(projectName, pageable);
+        if(doorSensors == null) {
+            log.warn("查询 -- 查询设备失败");
+            return ResponseUtils.fail("list devices fail");
+        }
+        log.info("查询 -- 查询设备成功");
+        JSONObject object = new JSONObject();
+        object.put("totalElements", doorSensors.getTotalElements());
+        object.put("totalPages", doorSensors.getTotalPages());
+        object.put("content", transform(doorSensors.getContent()));
+        object.put("numberOfElements", doorSensors.getNumberOfElements());
+        return ResponseUtils.success(object);
+    }
+
+    @Override
+    public JSONObject listStatusAndProject(String projectName, Integer page, Integer size) {
+        if (projectRepository.findOneByName(projectName) == null) {
+            log.warn("绑定报警车辆查询 -- 项目 {} 不存在", projectName);
+            return ResponseUtils.fail("project not found");
+        }
+        JSONObject alertObject = listByBindAndAlertAndProject(true, true, projectName, null, null);
+        if (alertObject.getInteger("code") != 0) {
+            log.warn("绑定报警车辆查询 -- 报警车辆查询失败");
+            return ResponseUtils.fail("list devices alert fail");
+        }
+        JSONObject normalObject = listByBindAndAlertAndProject(true, false, projectName, null, null);
+        if (normalObject.getInteger("code") != 0) {
+            log.warn("绑定报警车辆查询 -- 正常车辆查询失败");
+            return ResponseUtils.fail("list devices normal fail");
+        }
+        JSONObject unBindObject = listByBindAndProject(false, projectName, null, null);
+        if (unBindObject.getInteger("code") != 0) {
+            log.warn("绑定报警车辆查询 -- 解绑车辆查询失败");
+            return ResponseUtils.fail("list devices unbind fail");
+        }
+        log.info("绑定报警车辆查询 -- 绑定报警车辆查询成功");
+        JSONObject object = new JSONObject();
+        object.put("alert", alertObject.get("msg"));
+        object.put("normal", normalObject.get("msg"));
+        object.put("unbind", unBindObject.get("msg"));
+        return ResponseUtils.success(object);
+    }
+
+    @Override
+    public JSONObject listByBindAndProject(boolean bind, String projectName, Integer page, Integer size) {
+        if (projectRepository.findOneByName(projectName) == null) {
+            log.warn("查询绑定 -- 项目 {} 不存在", projectName);
+            return ResponseUtils.fail("project not found");
+        }
+        page = null == page ? 0 : page;
+        size = null == size ? 10 : size;
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "update_time");
+        Page<DoorSensor> doorSensors = doorSensorRepository.findAllByBindAndProject(false, projectName, pageable);
+        if (doorSensors == null) {
+            log.warn("查询绑定 -- 查询设备绑定失败");
+            return ResponseUtils.fail("list device bind fail");
+        }
+        log.info("查询绑定 -- 查询设备绑定成功");
+        JSONObject object = new JSONObject();
+        object.put("totalElements", doorSensors.getTotalElements());
+        object.put("totalPages", doorSensors.getTotalPages());
+        object.put("content", transform(doorSensors.getContent()));
+        object.put("numberOfElements", doorSensors.getNumberOfElements());
+        return ResponseUtils.success(object);
+    }
+
+    @Override
     public JSONObject listAll(Integer page, Integer size) {
         page = null == page ? 0 : page;
         size = null == size ? 10 : size;
