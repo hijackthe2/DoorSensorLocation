@@ -1,4 +1,4 @@
-package com.example.doorsensor.pojo.repository;
+package com.example.doorsensor.repository;
 
 import com.example.doorsensor.pojo.entity.GateWayInfo;
 import org.springframework.data.jpa.repository.JpaRepository;

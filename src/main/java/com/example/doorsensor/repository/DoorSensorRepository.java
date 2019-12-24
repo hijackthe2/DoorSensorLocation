@@ -1,4 +1,4 @@
-package com.example.doorsensor.pojo.repository;
+package com.example.doorsensor.repository;
 
 import com.example.doorsensor.pojo.entity.DoorSensor;
 import org.springframework.data.domain.Page;

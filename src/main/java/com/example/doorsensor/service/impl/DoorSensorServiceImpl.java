@@ -2,8 +2,8 @@ package com.example.doorsensor.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.doorsensor.pojo.entity.DoorSensor;
-import com.example.doorsensor.pojo.repository.DoorSensorRepository;
-import com.example.doorsensor.pojo.repository.ProjectRepository;
+import com.example.doorsensor.repository.DoorSensorRepository;
+import com.example.doorsensor.repository.ProjectRepository;
 import com.example.doorsensor.pojo.vo.DoorSensorVO;
 import com.example.doorsensor.service.DoorSensorService;
 import com.example.doorsensor.util.BeanUtils;

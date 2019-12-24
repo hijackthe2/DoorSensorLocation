@@ -34,7 +34,7 @@ public class SingleRequest {
 
     /**
      * 数据上传时间
-     * 格式：yyyMMddHHmmss
+     * 格式：yyyyMMddHHmmss
      */
     @Basic
     @Column(name = "last_update_time")
